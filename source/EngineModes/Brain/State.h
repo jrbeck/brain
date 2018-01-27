@@ -7,30 +7,36 @@
 
 #include "../../PriorityQueue.h"
 
-#define NUM_COLORS (50)
-
-#define COL_SOMA (0)
-#define COL_SOMA_FIRE (1)
-#define COL_AXON (2)
-#define COL_AXON_FIRE (3)
-#define COL_AXON_LINE (4)
-#define COL_AXON_LINE_FIRE (5)
-#define COL_SYNAPSE (6)
-#define COL_SYNAPSE_FIRE (7)
-#define COL_INPUT (8)
-#define COL_PROG1 (9)
-#define COL_PROG2 (10)
-
-
 #define INITIAL_INPUT_LEVEL (10.0f)
 
-
 namespace Brain {
-  typedef struct {
+  enum ProgramModes {
+    MODE_SIMULATE,
+    MODE_PAINT_NEURON,
+    MODE_PAINT_INPUT,
+    NUM_PROGRAM_MODES
+  };
+
+  enum Colors {
+    COLOR_SOMA,
+    COLOR_SOMA_FIRE,
+    COLOR_AXON,
+    COLOR_AXON_FIRE,
+    COLOR_AXON_LINE,
+    COLOR_AXON_LINE_FIRE,
+    COLOR_SYNAPSE,
+    COLOR_SYNAPSE_FIRE,
+    COLOR_INPUT,
+    COLOR_PROG1,
+    COLOR_PROG2,
+    NUM_COLORS,
+  };
+
+  struct RgbFloat {
     float r;
     float g;
     float b;
-  } rgb_float_t;
+  };
 
   struct Synapse {
     int source;
@@ -74,10 +80,11 @@ public:
     v2d_t windowToWorld(v2d_t a);
     v2d_t worldToWindow(v2d_t a);
 
+    int mProgramMode;
 
     PseudoRandom* mPseudoRandom;
 
-    rgb_float_t mColors[NUM_COLORS];
+    RgbFloat mColors[NUM_COLORS];
 
     PriorityQueue mEvents;
     std::vector<Neuron> mNeurons;
@@ -92,7 +99,10 @@ public:
     double mFurthestRightFire = 0.0;
     double mInputLevel = INITIAL_INPUT_LEVEL;
 
-    // double paint_radius = 300.0;
+    v2d_t mMousePosition;
+    bool mMouseMoved;
+
+    double mPaintRadius = 300.0;
 
     double mViewZoom = 1.0;
     v2d_t mViewBottomLeft;

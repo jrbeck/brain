@@ -22,11 +22,9 @@ namespace Brain {
   private:
     void drawNeurons();
 
-    void drawLine(v2d_t a, v2d_t b, rgb_float_t color);
-    void drawRing(float radius, v2d_t center, rgb_float_t color);
-    void drawHex(float radius, v2d_t center, rgb_float_t color);
-
-
+    void drawLine(v2d_t a, v2d_t b, RgbFloat color);
+    void drawRing(float radius, v2d_t center, RgbFloat color);
+    void drawHex(float radius, v2d_t center, RgbFloat color);
 
     int mWindowWidth, mWindowHeight;
 

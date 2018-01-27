@@ -1,7 +1,6 @@
 #pragma once
 
-#include <cassert>
-#include "vector"
+#include <vector>
 
 struct Event {
   double time;
@@ -21,11 +20,11 @@ public:
   bool extract(Event* event);
   bool peek(Event* event);
 
-  void eventDecreaseKey(int i);
-  void eventMinHeapify(int i);
-  inline int heapParent(int i);
-  inline int heapLeft(int i);
-  inline int heapRight(int i);
+  void decreaseKey(size_t index);
+  void minHeapify(size_t index);
+  inline size_t heapParent(size_t index);
+  inline size_t heapLeft(size_t index);
+  inline size_t heapRight(size_t index);
 
 private:
   std::vector<Event> mHeap;

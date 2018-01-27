@@ -14,11 +14,12 @@ size_t PriorityQueue::size() {
 
 void PriorityQueue::insert(const Event& event) {
   mHeap.push_back(event);
-  eventDecreaseKey((int)mHeap.size() - 1);
+  decreaseKey(mHeap.size() - 1);
 }
 
 bool PriorityQueue::extract(Event* event) {
-  if (mHeap.size() == 0) {
+  size_t heapSize = mHeap.size();
+  if (heapSize == 0) {
     return false;
   }
 
@@ -26,9 +27,9 @@ bool PriorityQueue::extract(Event* event) {
     *event = mHeap[0];
   }
 
-  mHeap[0] = mHeap[mHeap.size() - 1];
+  mHeap[0] = mHeap[heapSize - 1];
   mHeap.pop_back();
-  eventMinHeapify(0);
+  minHeapify(0);
   return true;
 }
 
@@ -44,52 +45,55 @@ bool PriorityQueue::peek(Event* event) {
   return true;
 }
 
-void PriorityQueue::eventDecreaseKey(int i) {
-  int parent;
+void PriorityQueue::decreaseKey(size_t index) {
+  size_t parentIndex;
 
-  while (i > 0 && mHeap[parent = heapParent(i)].time > mHeap[i].time) {
-    Event temp = mHeap[i];
-    mHeap[i] = mHeap[parent];
-    mHeap[parent] = temp;
-
-    i = parent;
+  while (index != 0 && mHeap[parentIndex = heapParent(index)].time > mHeap[index].time) {
+    Event temp = mHeap[index];
+    mHeap[index] = mHeap[parentIndex];
+    mHeap[parentIndex] = temp;
+    index = parentIndex;
   }
 }
 
-void PriorityQueue::eventMinHeapify(int i) {
-  int leftIndex = heapLeft(i);
-  int rightIndex = heapRight(i);
+void PriorityQueue::minHeapify(size_t index) {
+  size_t leftIndex = heapLeft(index);
+  size_t rightIndex = heapRight(index);
 
-  int smallest;
+  size_t smallestIndex;
+  size_t heapSize = mHeap.size();
 
-  if (leftIndex < (int)mHeap.size() && mHeap[leftIndex].time < mHeap[i].time) {
-    smallest = leftIndex;
+  if (leftIndex < heapSize && mHeap[leftIndex].time < mHeap[index].time) {
+    smallestIndex = leftIndex;
   }
   else {
-    smallest = i;
+    smallestIndex = index;
   }
 
-  if (rightIndex < (int)mHeap.size() && mHeap[rightIndex].time < mHeap[smallest].time) {
-    smallest = rightIndex;
+  if (rightIndex < heapSize && mHeap[rightIndex].time < mHeap[smallestIndex].time) {
+    smallestIndex = rightIndex;
   }
 
-  if (smallest != i) {
-    Event temp = mHeap[i];
-    mHeap[i] = mHeap[smallest];
-    mHeap[smallest] = temp;
-
-    eventMinHeapify(smallest);
+  if (smallestIndex != index) {
+    Event temp = mHeap[index];
+    mHeap[index] = mHeap[smallestIndex];
+    mHeap[smallestIndex] = temp;
+    minHeapify(smallestIndex);
   }
 }
 
-inline int PriorityQueue::heapParent(int i) {
-  return ((i + 1) >> 1) - 1;
+inline size_t PriorityQueue::heapParent(size_t index) {
+  if (index == 0) {
+    // should this explode with an overflow instead?
+    return 0;
+  }
+  return ((index + 1) >> 1) - 1;
 }
 
-inline int PriorityQueue::heapLeft(int i) {
-  return ((i + 1) << 1) - 1;
+inline size_t PriorityQueue::heapLeft(size_t index) {
+  return ((index + 1) << 1) - 1;
 }
 
-inline int PriorityQueue::heapRight(int i) {
-  return (i + 1) << 1;
+inline size_t PriorityQueue::heapRight(size_t index) {
+  return (index + 1) << 1;
 }

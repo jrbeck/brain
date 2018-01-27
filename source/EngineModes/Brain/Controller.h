@@ -1,21 +1,15 @@
 #pragma once
 
-#include <cstdio>
-#include <cstdlib>
-#include <cmath>
-// #include <calloc>
+// #include <cstdio>
+// #include <cstdlib>
+// #include <cmath>
 #include <vector>
 
-// #include "../../sdl_util.h"
-#include "../../math_util.h"
-//#include "include/qs_util.h"
+#include <SDL2/SDL.h>
 
 #include "State.h"
 #include "Renderer.h"
 
-// defines * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// #define SCREEN_W (512)
-// #define SCREEN_H (512)
 
 #define FLASH_TIME (20)
 #define MIN_THRESHOLD (25.0f)
@@ -50,6 +44,7 @@ namespace Brain {
     void drawFrame();
 
     void update();
+    bool handleInput();
 
     void paintNeurons(v2d_t center, double radius, int num);
     void removeSynapses();
@@ -62,7 +57,9 @@ namespace Brain {
     void simReset();
 
   private:
-    void initColors();
+    bool handleKeystroke();
+    void handleMouseButton(int button, v2d_t pos, int mode);
+
     void viewReset();
     void initNeurons();
     void growNeurons(v2d_t tl, v2d_t br, int num);
@@ -77,5 +74,7 @@ namespace Brain {
 
     State* mState;
     Renderer* mRenderer;
+
+    SDL_Event mSdlEvent;
   };
 }

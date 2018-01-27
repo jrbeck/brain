@@ -2,6 +2,7 @@
 
 namespace Brain {
   State::State() :
+    mProgramMode(MODE_PAINT_NEURON),
     mPseudoRandom(nullptr)
   {
     mPseudoRandom = new PseudoRandom();
@@ -25,53 +26,56 @@ namespace Brain {
       mColors[i].b = (float)mPseudoRandom->nextDouble(0.0f, 1.0f);
     }
 
-    mColors[COL_SOMA].r = 0.0f;
-    mColors[COL_SOMA].g = 0.5f;
-    mColors[COL_SOMA].b = 0.75f;
+    mColors[COLOR_SOMA].r = 0.0f;
+    mColors[COLOR_SOMA].g = 0.5f;
+    mColors[COLOR_SOMA].b = 0.75f;
 
-    mColors[COL_SOMA_FIRE].r = 1.0f;
-    mColors[COL_SOMA_FIRE].g = 1.0f;
-    mColors[COL_SOMA_FIRE].b = 0.5f;
+    mColors[COLOR_SOMA_FIRE].r = 1.0f;
+    mColors[COLOR_SOMA_FIRE].g = 1.0f;
+    mColors[COLOR_SOMA_FIRE].b = 0.5f;
 
-    mColors[COL_AXON].r = 0.5f;
-    mColors[COL_AXON].g = 0.5f;
-    mColors[COL_AXON].b = 0.75f;
+    mColors[COLOR_AXON].r = 0.5f;
+    mColors[COLOR_AXON].g = 0.5f;
+    mColors[COLOR_AXON].b = 0.75f;
 
-    mColors[COL_AXON_FIRE].r = 1.0f;
-    mColors[COL_AXON_FIRE].g = 1.0f;
-    mColors[COL_AXON_FIRE].b = 0.5f;
+    mColors[COLOR_AXON_FIRE].r = 1.0f;
+    mColors[COLOR_AXON_FIRE].g = 1.0f;
+    mColors[COLOR_AXON_FIRE].b = 0.5f;
 
-    mColors[COL_AXON_LINE].r = 0.0f;
-    mColors[COL_AXON_LINE].g = 0.5f;
-    mColors[COL_AXON_LINE].b = 0.75f;
+    mColors[COLOR_AXON_LINE].r = 0.0f;
+    mColors[COLOR_AXON_LINE].g = 0.5f;
+    mColors[COLOR_AXON_LINE].b = 0.75f;
 
-    mColors[COL_AXON_LINE_FIRE].r = 1.0f;
-    mColors[COL_AXON_LINE_FIRE].g = 1.0f;
-    mColors[COL_AXON_LINE_FIRE].b = 0.5f;
+    mColors[COLOR_AXON_LINE_FIRE].r = 1.0f;
+    mColors[COLOR_AXON_LINE_FIRE].g = 1.0f;
+    mColors[COLOR_AXON_LINE_FIRE].b = 0.5f;
 
-    mColors[COL_SYNAPSE].r = 0.0f;
-    mColors[COL_SYNAPSE].g = 0.2f;
-    mColors[COL_SYNAPSE].b = 0.35f;
+    mColors[COLOR_SYNAPSE].r = 0.0f;
+    mColors[COLOR_SYNAPSE].g = 0.2f;
+    mColors[COLOR_SYNAPSE].b = 0.35f;
 
-    mColors[COL_SYNAPSE_FIRE].r = 1.0f;
-    mColors[COL_SYNAPSE_FIRE].g = 0.5f;
-    mColors[COL_SYNAPSE_FIRE].b = 0.0f;
+    mColors[COLOR_SYNAPSE_FIRE].r = 1.0f;
+    mColors[COLOR_SYNAPSE_FIRE].g = 0.5f;
+    mColors[COLOR_SYNAPSE_FIRE].b = 0.0f;
 
-    mColors[COL_INPUT].r = 0.5f;
-    mColors[COL_INPUT].g = 1.0f;
-    mColors[COL_INPUT].b = 1.0f;
+    mColors[COLOR_INPUT].r = 0.5f;
+    mColors[COLOR_INPUT].g = 1.0f;
+    mColors[COLOR_INPUT].b = 1.0f;
 
-    mColors[COL_PROG1].r = 0.6f;
-    mColors[COL_PROG1].g = 0.65f;
-    mColors[COL_PROG1].b = 0.85f;
+    mColors[COLOR_PROG1].r = 0.6f;
+    mColors[COLOR_PROG1].g = 0.65f;
+    mColors[COLOR_PROG1].b = 0.85f;
 
-    mColors[COL_PROG2].r = 0.20f;
-    mColors[COL_PROG2].g = 0.25f;
-    mColors[COL_PROG2].b = 0.35f;
+    mColors[COLOR_PROG2].r = 0.20f;
+    mColors[COLOR_PROG2].g = 0.25f;
+    mColors[COLOR_PROG2].b = 0.35f;
   }
 
-
   void State::reset() {
+    mMousePosition.x = 0;
+    mMousePosition.y = 0;
+    mMouseMoved = false;
+
     //mNeurons.clear();
     //initNeurons();
 
@@ -108,7 +112,6 @@ namespace Brain {
       mNeurons[i].synapses.clear();
     }
   }
-
 
   v2d_t State::windowToWorld(v2d_t a) {
     return v2d_add(v2d_scale(a, mViewZoom), mViewBottomLeft);
