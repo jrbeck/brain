@@ -58,7 +58,7 @@ namespace Brain {
 
   private:
     bool handleKeystroke();
-    void handleMouseButton(int button, v2d_t pos, int mode);
+    void handleMouseButton(int button, v2d_t pos);
 
     void viewReset();
     void initNeurons();

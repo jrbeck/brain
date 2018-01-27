@@ -68,7 +68,7 @@ namespace Brain {
     // draw axon and soma non flashers
     for (int i = 0; i < (int)mState->mNeurons.size(); ++i) {
       if (mState->mNeurons[i].flash_time <= mState->mSimTime) {
-        drawHex(NEURON_DRAW_RADIUS +(8.0f *(float)(mState->mNeurons[i].charge / mState->mNeurons[i].threshold)), mState->mNeurons[i].soma_d, mState->mColors[COLOR_SOMA]);
+        drawHex(NEURON_DRAW_RADIUS + (8.0f *(float)(mState->mNeurons[i].charge / mState->mNeurons[i].threshold)), mState->mNeurons[i].soma_d, mState->mColors[COLOR_SOMA]);
         drawRing(NEURON_DRAW_RADIUS, mState->mNeurons[i].axon_d, mState->mColors[COLOR_AXON]);
       }
     }

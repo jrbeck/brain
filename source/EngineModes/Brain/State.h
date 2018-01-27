@@ -72,13 +72,11 @@ public:
 
     void reset();
 
-
     void flushNeurons();
     void removeSynapses();
 
-
-    v2d_t windowToWorld(v2d_t a);
-    v2d_t worldToWindow(v2d_t a);
+    v2d_t windowToWorld(v2d_t vec2);
+    v2d_t worldToWindow(v2d_t vec2);
 
     int mProgramMode;
 

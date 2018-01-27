@@ -113,11 +113,11 @@ namespace Brain {
     }
   }
 
-  v2d_t State::windowToWorld(v2d_t a) {
-    return v2d_add(v2d_scale(a, mViewZoom), mViewBottomLeft);
+  v2d_t State::windowToWorld(v2d_t vec2) {
+    return v2d_add(v2d_scale(vec2, mViewZoom), mViewBottomLeft);
   }
 
-  v2d_t State::worldToWindow(v2d_t a) {
-    return v2d_scale(v2d_sub(a, mViewBottomLeft), 1.0 / mViewZoom);
+  v2d_t State::worldToWindow(v2d_t vec2) {
+    return v2d_scale(v2d_sub(vec2, mViewBottomLeft), 1.0 / mViewZoom);
   }
 }

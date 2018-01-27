@@ -58,8 +58,8 @@ namespace Brain {
           break;
 
         case SDL_MOUSEMOTION:
-          mouseDelta.x = (mState->mMousePosition.x - mSdlEvent.motion.x);
-          mouseDelta.y = -(mState->mMousePosition.y - mSdlEvent.motion.y);
+          mouseDelta.x = mState->mMousePosition.x - mSdlEvent.motion.x;
+          mouseDelta.y = mState->mMousePosition.y - mSdlEvent.motion.y;
 
           mState->mMousePosition.x = mSdlEvent.motion.x;
           mState->mMousePosition.y = mSdlEvent.motion.y;
@@ -68,14 +68,14 @@ namespace Brain {
           break;
 
         case SDL_MOUSEBUTTONDOWN:
-          handleMouseButton(mSdlEvent.button.button, v2d_v(mSdlEvent.button.x, mWindowHeight - mSdlEvent.button.y), mState->mProgramMode);
+          handleMouseButton(mSdlEvent.button.button, v2d_v(mSdlEvent.button.x, mSdlEvent.button.y));
           break;
 
         case SDL_MOUSEBUTTONUP:
           if (mSdlEvent.button.button == SDL_BUTTON_LEFT) {
             // mouseDrag = false;
           }
-         // handleMouseButton(mSdlEvent.button.button, mState->windowToWorld(v2d_v(mSdlEvent.button.x, mWindowHeight - mSdlEvent.button.y)), mState->mProgramMode);
+         // handleMouseButton(mSdlEvent.button.button, mState->windowToWorld(v2d_v(mSdlEvent.button.x, mSdlEvent.button.y)));
 
           break;
       }
@@ -137,10 +137,10 @@ namespace Brain {
     return quit;
   }
 
-  void Controller::handleMouseButton(int button, v2d_t windowCoords, int mode) {
+  void Controller::handleMouseButton(int button, v2d_t windowCoords) {
     v2d_t worldCoords = mState->windowToWorld(windowCoords);
 
-    if (mode == MODE_SIMULATE) {
+    if (mState->mProgramMode == MODE_SIMULATE) {
       // if (button == SDL_BUTTON_WHEELUP) {
       //   mState->mViewBottomLeft = v2d_sub(worldCoords, v2d_scale(v2d_sub(worldCoords, mState->mViewBottomLeft), 0.8333));
       //   mState->mViewTopRight = v2d_add(worldCoords, v2d_scale(v2d_sub(mState->mViewTopRight, worldCoords), 0.8333));
@@ -151,7 +151,7 @@ namespace Brain {
       // }
       // mState->mViewZoom = (mState->mViewTopRight.x - mState->mViewBottomLeft.x) / mWindowWidth;
     }
-    else if (mode == MODE_PAINT_NEURON) {
+    else if (mState->mProgramMode == MODE_PAINT_NEURON) {
       if (button == SDL_BUTTON_LEFT) {
         paintNeurons(worldCoords, mState->mPaintRadius * mState->mViewZoom,(int)(PAINT_DENSITY * (MY_PI * mState->mPaintRadius * mState->mPaintRadius)));
       }
@@ -167,7 +167,7 @@ namespace Brain {
       //   mState->mPaintRadius += 6;
       // }
     }
-    else if (mode == MODE_PAINT_INPUT) {
+    else if (mState->mProgramMode == MODE_PAINT_INPUT) {
       if (button == SDL_BUTTON_LEFT) {
         paintInputNeuron(worldCoords, mState->mPaintRadius * mState->mViewZoom);
       }
