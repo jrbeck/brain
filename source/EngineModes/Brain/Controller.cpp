@@ -49,8 +49,6 @@ namespace Brain {
     v2d_t mouseDelta;
     // bool mouseDrag = false;
 
-
-
     while (SDL_PollEvent(&mSdlEvent) && !quit) {
       switch (mSdlEvent.type) {
         case SDL_KEYDOWN:
@@ -153,7 +151,9 @@ namespace Brain {
     }
     else if (mState->mProgramMode == MODE_PAINT_NEURON) {
       if (button == SDL_BUTTON_LEFT) {
-        paintNeurons(worldCoords, mState->mPaintRadius * mState->mViewZoom,(int)(PAINT_DENSITY * (MY_PI * mState->mPaintRadius * mState->mPaintRadius)));
+        paintNeurons(worldCoords,
+          mState->mPaintRadius * mState->mViewZoom,
+          (int)(PAINT_DENSITY * (MY_PI * mState->mPaintRadius * mState->mPaintRadius)));
       }
       if (button == SDL_BUTTON_RIGHT) {
         removeSynapses();

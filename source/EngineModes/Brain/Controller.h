@@ -19,7 +19,7 @@
 
 #define MAX_DENDRITE_LENGTH (1.35)
 #define MIN_AXON_LENGTH (1.25)
-#define MAX_AXON_LENGTH (1.35)
+#define MAX_AXON_LENGTH (2.35)
 
 #define INPUT_DELAY (33)
 

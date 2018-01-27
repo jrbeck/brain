@@ -27,17 +27,17 @@ namespace Brain {
 
     drawNeurons();
 
-    // if (gProgramMode == MODE_SIMULATE) {
-    //   draw_mouse(gMousePosition, 22, 32);
-    // }
-    // else if (gProgramMode == MODE_PAINT_NEURON || gProgramMode == MODE_PAINT_INPUT) {
-    //   draw_ring((float)paint_radius, v2d_vector(gMousePosition.x, SCREEN_HEIGHT - gMousePosition.y), color[gProgramMode]);
-    // }
+    if (mState->mProgramMode == MODE_SIMULATE) {
+      // draw_mouse(mState->mMousePosition, 22, 32);
+    }
+    else if (mState->mProgramMode == MODE_PAINT_NEURON || mState->mProgramMode == MODE_PAINT_INPUT) {
+      drawRing((float)mState->mPaintRadius, v2d_v(mState->mMousePosition.x, mState->mMousePosition.y), mState->mColors[mState->mProgramMode]);
+    }
   }
 
 
   void Renderer::drawNeurons() {
-    int num_flashes = 0;
+    int numFlashes = 0;
 
     // project to window coords
     for (int i = 0; i < (int)mState->mNeurons.size(); ++i) {
@@ -78,7 +78,7 @@ namespace Brain {
       if (mState->mNeurons[i].flash_time > mState->mSimTime) {
         drawHex(NEURON_DRAW_RADIUS + 4.0f, mState->mNeurons[i].soma_d, mState->mColors[COLOR_SOMA_FIRE]);
         drawHex(NEURON_DRAW_RADIUS + 3.0f, mState->mNeurons[i].axon_d, mState->mColors[COLOR_AXON_FIRE]);
-        num_flashes++;
+        numFlashes++;
       }
     }
 
@@ -96,7 +96,7 @@ namespace Brain {
     // br.x = 400;
     // br.y = 20;
     //
-    // draw_progress_bar(tl, br, (double)num_flashes /(double)mState->mNeurons.size(), mState->mColors[COLOR_PROG1], mState->mColors[COLOR_PROG2]);
+    // draw_progress_bar(tl, br, (double)numFlashes /(double)mState->mNeurons.size(), mState->mColors[COLOR_PROG1], mState->mColors[COLOR_PROG2]);
   }
 
 
@@ -110,8 +110,8 @@ namespace Brain {
     char blue = color.b * 255;
 
     v2d_t a, b;
-    a.x = center.x + radius;
-    a.y = center.y;
+    b.x = center.x + radius;
+    b.y = center.y;
 
     for (int i = 0; i <= 360; i += 10) {
       double radians = (double)i * DEG2RAD;
