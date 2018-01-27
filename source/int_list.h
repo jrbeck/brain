@@ -1,11 +1,3 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// * int_list.h
-// *
-// * integer list library
-// *
-// * by john beck
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 #ifndef INT_LIST_H_
 #define INT_LIST_H_
 
@@ -31,10 +23,10 @@ int is_element_of (int x, int_list_t list, int l, int r);
 // create a new int_list
 int_list_t create_int_list (int size) {
 	int_list_t ret;
-	
+
 	ret.size = size;
 	ret.data = (int *)malloc (size * sizeof (int));
-	
+
 	return ret;
 }
 
@@ -48,7 +40,7 @@ int is_element_of (int x, int_list_t list) {
 	for (int i = 0; i < list.size; i++) {
 		if (list.data[i] == x) return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -57,7 +49,7 @@ int is_element_of (int x, int_list_t list, int l, int r) {
 	for (; l <= r; l++) {
 		if (list.data[l] == x) return 1;
 	}
-	
+
 	return 0;
 }
 

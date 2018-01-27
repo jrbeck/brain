@@ -3,8 +3,6 @@
 // key type (int, double...)
 
 
-
-
 #include <malloc.h>
 #include <string.h>
 
@@ -48,10 +46,10 @@ int qs_partition (void *a, int p, int r, int key_offset, int element_size, doubl
 // exchange 2 double elements
 void exchange_element (void *i, void *j, int element_size) {
 	void *temp = (void *)malloc (element_size);
-	
+
 	memcpy (temp, i, element_size);
 	memcpy (i, j, element_size);
 	memcpy (j, temp, element_size);
-	
+
 	free (temp);
 }

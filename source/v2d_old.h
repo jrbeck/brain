@@ -1,11 +1,3 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// * v2d.h
-// *
-// * 2d vector math library
-// *
-// * by john beck
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 #ifndef V2D_H_
 #define V2D_H_
 
@@ -158,7 +150,7 @@ double v2d_dot (v2d_t a, v2d_t b) {
 
 // returns a cross b (sorta)
 double v2d_cross (v2d_t a, v2d_t b) {
-	return ((a.x * b.y) - (a.y * b.x));	
+	return ((a.x * b.y) - (a.y * b.x));
 }
 
 
