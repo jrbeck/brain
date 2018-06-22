@@ -7,6 +7,10 @@ namespace Brain {
   {
     mPseudoRandom = new PseudoRandom();
 
+    mMousePosition.x = 0;
+    mMousePosition.y = 0;
+    mMouseMoved = false;
+
     initColors();
     reset();
   }
@@ -72,10 +76,6 @@ namespace Brain {
   }
 
   void State::reset() {
-    mMousePosition.x = 0;
-    mMousePosition.y = 0;
-    mMouseMoved = false;
-
     //mNeurons.clear();
     //initNeurons();
 

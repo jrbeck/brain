@@ -100,7 +100,7 @@ public:
     v2d_t mMousePosition;
     bool mMouseMoved;
 
-    double mPaintRadius = 300.0;
+    double mPaintRadius = 100.0;
 
     double mViewZoom = 1.0;
     v2d_t mViewBottomLeft;

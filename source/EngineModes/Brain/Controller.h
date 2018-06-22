@@ -26,7 +26,7 @@
 #define MIN_TIME_STEP (30)
 #define SIMULATION_SPEED (.8)
 
-#define PAINT_DENSITY (0.0002)
+#define PAINT_DENSITY (0.001)
 
 #define VIEW_DEFAULT_BOTTOM (-10)
 #define VIEW_DEFAULT_LEFT (-10)

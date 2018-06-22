@@ -1,8 +1,8 @@
 #include "engine/SdlApp.h"
 #include "EngineModes/Brain/Controller.h"
 
-#define SCREEN_WIDTH (512)
-#define SCREEN_HEIGHT (512)
+#define SCREEN_WIDTH (1024)
+#define SCREEN_HEIGHT (768)
 
 void mainLoop(Brain::Controller* brainController) {
   SdlApp sdlApp;
