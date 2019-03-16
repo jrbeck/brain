@@ -1,8 +1,8 @@
 #include "engine/SdlApp.h"
 #include "EngineModes/Brain/Controller.h"
 
-#define SCREEN_WIDTH (512)
-#define SCREEN_HEIGHT (512)
+#define SCREEN_WIDTH (1024)
+#define SCREEN_HEIGHT (1024)
 
 void mainLoop(Brain::Controller* brainController) {
   SdlApp sdlApp;
@@ -26,7 +26,7 @@ void mainLoop(Brain::Controller* brainController) {
   sdlApp.quit();
 }
 
-int main() {
+int main(int nargs, char** argv) {
   Brain::Controller* brainController = new Brain::Controller(SCREEN_WIDTH, SCREEN_HEIGHT);
   mainLoop(brainController);
   delete brainController;
