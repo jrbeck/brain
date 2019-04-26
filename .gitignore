@@ -1,1 +1,38 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+/Debug
+/Release
+
+/brain/Debug
+/brain/Release
+
+*.suo
+*.user
+
+# OS junk files
+[Tt]humbs.db
+*.DS_Store
+brain.sdf
+brain.opensdf
+
+# vs code
+.vscode
+
+# vs 2017
+.vs
+
+# output from build.sh
 brain
