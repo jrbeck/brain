@@ -56,11 +56,13 @@ namespace Brain {
           break;
 
         case SDL_MOUSEMOTION:
-          mouseDelta.x = mState.mMousePosition.x - mSdlEvent.motion.x;
-          mouseDelta.y = -(mState.mMousePosition.y - mSdlEvent.motion.y);
+          mouseDelta.x = mSdlEvent.motion.x - mState.mMousePosition.x;
+          mouseDelta.y = -(mSdlEvent.motion.y - mState.mMousePosition.y);
 
           mState.mMousePosition.x = mSdlEvent.motion.x;
           mState.mMousePosition.y = mSdlEvent.motion.y;
+
+          mState.mMousePosition.print("pos");
 
           mState.mMouseMoved = true;
           break;
@@ -78,19 +80,22 @@ namespace Brain {
           break;
 
         case SDL_MOUSEWHEEL:
-          handleMouseWheelEvent(mSdlEvent.wheel, mState.mMousePosition);
+          handleMouseWheelEvent(mSdlEvent.wheel);
       }
+
+      // handle mouse drag
+      // FIXME: not here please!
+      Uint8 mouseState = SDL_GetMouseState(NULL, NULL);
+
+      if (mState.mProgramMode == MODE_SIMULATE) {
+        if (mState.mMouseMoved && (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+          mState.mViewport.translateByPixels(mouseDelta);
+          mState.mMouseMoved = false;
+        }
+      }
+
     }
 
-    // handle mouse drag
-    // FIXME: not here please!
-    Uint8 mouseState = SDL_GetMouseState(NULL, NULL);
-
-    if (mState.mProgramMode == MODE_SIMULATE) {
-      if (mState.mMouseMoved && (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-        mState.mViewport.translateByPixels(mouseDelta);
-      }
-    }
 
     return quit;
   }
@@ -163,15 +168,14 @@ namespace Brain {
     }
   }
 
-  void Controller::handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent, const Vec2& windowCoords) {
-    Vec2 worldCoords = mState.windowToWorld(windowCoords);
-
+  void Controller::handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent) {
     if (mState.mProgramMode == MODE_SIMULATE) {
+      Vec2 worldPosition = mState.windowToWorld(mState.mMousePosition);
       if (wheelEvent.y > 0) {
-        mState.mViewport.zoom(0.8333);
+        mState.mViewport.zoom(0.8333, worldPosition);
       }
       else if (wheelEvent.y < 0) {
-        mState.mViewport.zoom(1.2);
+        mState.mViewport.zoom(1.2, worldPosition);
       }
     }
     else if (mState.mProgramMode == MODE_PAINT_NEURON || mState.mProgramMode == MODE_PAINT_INPUT) {
@@ -186,6 +190,7 @@ namespace Brain {
 
   void Controller::simReset() {
     mState.reset();
+    // mState.mViewport.reset();
   }
 
   void Controller::viewReset() {

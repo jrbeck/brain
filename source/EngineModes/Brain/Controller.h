@@ -55,7 +55,7 @@ namespace Brain {
   private:
     bool handleKeystroke();
     void handleMouseButton(int button, const Vec2& windowCoords);
-    void handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent, const Vec2& windowCoords);
+    void handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent);
 
     void viewReset();
     void initNeurons();

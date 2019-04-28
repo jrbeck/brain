@@ -24,7 +24,7 @@ public:
   Vec2 operator+(const Vec2& a) const;
   Vec2 operator-(const Vec2& a) const;
   Vec2& operator+=(const Vec2& a);
-  // Vec2& operator-=(const Vec2& a);
+  Vec2& operator-=(const Vec2& a);
   // Vec2& operator/=(const Vec2& a);
   // Vec2& operator/=(const VEC2_DATA_TYPE a);
   Vec2& operator*=(const VEC2_DATA_TYPE a);

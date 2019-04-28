@@ -36,3 +36,7 @@ brain.opensdf
 
 # output from build.sh
 brain
+
+# cmake
+cmake_dir
+bin
