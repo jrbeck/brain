@@ -2,6 +2,7 @@
 
 #include "ImageBuffer.h"
 #include "Vec2.h"
+#include "v2d_t.h" // DEPRECATED
 #include "BasicText.h"
 
 #define DRAWSTRINGF_MAX_LENGTH (4096)
@@ -17,8 +18,8 @@ public:
 
   void setRgb(int x, int y, unsigned char red, unsigned char green, unsigned char blue);
   void setRgb(const v2di_t& a, unsigned char red, unsigned char green, unsigned char blue);
-  void setRgb(const v2d_t& a, unsigned char red, unsigned char green, unsigned char blue);
-  void drawLine(const v2d_t& a, const v2d_t& b, unsigned char red, unsigned char green, unsigned char blue);
+  void setRgb(const Vec2& a, unsigned char red, unsigned char green, unsigned char blue);
+  void drawLine(const Vec2& a, const Vec2& b, unsigned char red, unsigned char green, unsigned char blue);
 
   void drawString(int x, int y, const char* text);
   void drawFormattedString(int x, int y, const char* format, ...);

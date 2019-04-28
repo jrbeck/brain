@@ -10,21 +10,21 @@
 
 #define NEURON_DRAW_RADIUS (2.0f)
 
-namespace Brain {
+namespace Graph2d {
   class Renderer {
   public:
     Renderer(int windowWidth, int windowHeight);
     ~Renderer();
 
     ImageBuffer* getImageBuffer();
-    void drawFrame(State& state);
+    void drawFrame(State* state);
 
   private:
     void drawNeurons();
 
-    void drawLine(Vec2 a, Vec2 b, RgbFloat color);
-    void drawRing(float radius, Vec2 center, RgbFloat color);
-    void drawHex(float radius, Vec2 center, RgbFloat color);
+    void drawLine(v2d_t a, v2d_t b, RgbFloat color);
+    void drawRing(float radius, v2d_t center, RgbFloat color);
+    void drawHex(float radius, v2d_t center, RgbFloat color);
 
     int mWindowWidth, mWindowHeight;
 

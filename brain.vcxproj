@@ -138,7 +138,7 @@
     <ClInclude Include="source\engine\Pixel.h" />
     <ClInclude Include="source\engine\PseudoRandom.h" />
     <ClInclude Include="source\engine\SdlApp.h" />
-    <ClInclude Include="source\engine\Vec2.h" />
+    <ClInclude Include="source\engine\v2d_t.h" />
     <ClInclude Include="source\lib\lodepng.h" />
     <ClInclude Include="source\PriorityQueue.h" />
   </ItemGroup>

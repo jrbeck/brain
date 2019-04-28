@@ -1,17 +1,17 @@
 #!/bin/sh
 
-clear
-
 g++ \
   source/main.cpp \
   source/PriorityQueue.cpp \
   source/engine/SdlApp.cpp \
+  source/engine/v2d_t.cpp \
   source/engine/Vec2.cpp \
   source/engine/ImageBuffer.cpp \
   source/engine/Pixel.cpp \
   source/engine/Painter.cpp \
   source/engine/BasicText.cpp \
   source/engine/PseudoRandom.cpp \
+  source/engine/Viewport.cpp \
   source/engine/Messaging/MessageBus.cpp \
   source/engine/Messaging/Mailbox.cpp \
   source/engine/Messaging/Message.cpp \

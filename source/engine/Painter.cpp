@@ -43,7 +43,7 @@ void Painter::setRgb(const v2di_t& a, unsigned char red, unsigned char green, un
   mImageBuffer->setRgb(a.x, a.y, red, green, blue);
 }
 
-void Painter::setRgb(const v2d_t& a, unsigned char red, unsigned char green, unsigned char blue) {
+void Painter::setRgb(const Vec2& a, unsigned char red, unsigned char green, unsigned char blue) {
   int x = (int)a.x;
   int y = (int)a.y;
 
@@ -54,7 +54,7 @@ void Painter::setRgb(const v2d_t& a, unsigned char red, unsigned char green, uns
   mImageBuffer->setRgb(x, y, red, green, blue);
 }
 
-void Painter::drawLine(const v2d_t& a, const v2d_t& b, unsigned char red, unsigned char green, unsigned char blue) {
+void Painter::drawLine(const Vec2& a, const Vec2& b, unsigned char red, unsigned char green, unsigned char blue) {
   int x0 = (int)a.x;
   int y0 = (int)a.y;
   int x1 = (int)b.x;

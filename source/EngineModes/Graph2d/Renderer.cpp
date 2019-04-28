@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-namespace Brain {
+namespace Graph2d {
   Renderer::Renderer(int windowWidth, int windowHeight) :
     mImageBuffer(nullptr),
     mPainter(nullptr)
@@ -20,8 +20,8 @@ namespace Brain {
     return mImageBuffer;
   }
 
-  void Renderer::drawFrame(State& state) {
-    mState = &state;
+  void Renderer::drawFrame(State* state) {
+    mState = state;
 
     mPainter->clear(0, 0, 0);
 
@@ -31,7 +31,7 @@ namespace Brain {
       // draw_mouse(mState->mMousePosition, 22, 32);
     }
     else if (mState->mProgramMode == MODE_PAINT_NEURON || mState->mProgramMode == MODE_PAINT_INPUT) {
-      drawRing((float)mState->mPaintRadius, Vec2(mState->mMousePosition.x, mState->mMousePosition.y), mState->mColors[mState->mProgramMode]);
+      drawRing((float)mState->mPaintRadius, v2d_v(mState->mMousePosition.x, mState->mMousePosition.y), mState->mColors[mState->mProgramMode]);
     }
   }
 
@@ -46,8 +46,8 @@ namespace Brain {
     }
 
     for (int i = 0; i < (int)mState->mNeurons.size(); ++i) {
-      Vec2 soma = mState->mNeurons[i].soma_d;
-      Vec2 axon = mState->mNeurons[i].axon_d;
+      v2d_t soma = mState->mNeurons[i].soma_d;
+      v2d_t axon = mState->mNeurons[i].axon_d;
 
       // draw soma to axon line
       drawLine(soma, axon, mState->mColors[COLOR_AXON_LINE]);
@@ -88,7 +88,7 @@ namespace Brain {
     }
 
     // draw the flashing neuron ratio
-    // Vec2 tl, br;
+    // v2d_t tl, br;
     //
     // tl.x = 100;
     // tl.y = 40;
@@ -100,16 +100,16 @@ namespace Brain {
   }
 
 
-  void Renderer::drawLine(Vec2 a, Vec2 b, RgbFloat color) {
+  void Renderer::drawLine(v2d_t a, v2d_t b, RgbFloat color) {
     mPainter->drawLine(a, b, color.r * 255, color.g * 255, color.b * 255);
   }
 
-  void Renderer::drawRing(float radius, Vec2 center, RgbFloat color) {
+  void Renderer::drawRing(float radius, v2d_t center, RgbFloat color) {
     char red = color.r * 255;
     char green = color.g * 255;
     char blue = color.b * 255;
 
-    Vec2 a, b;
+    v2d_t a, b;
     b.x = center.x + radius;
     b.y = center.y;
 
@@ -123,12 +123,12 @@ namespace Brain {
     }
   }
 
-  void Renderer::drawHex(float radius, Vec2 center, RgbFloat color) {
+  void Renderer::drawHex(float radius, v2d_t center, RgbFloat color) {
     char red = color.r * 255;
     char green = color.g * 255;
     char blue = color.b * 255;
 
-    Vec2 a, b;
+    v2d_t a, b;
     b.x = center.x + radius;
     b.y = center.y;
 

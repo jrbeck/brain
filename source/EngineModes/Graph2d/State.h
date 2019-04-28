@@ -2,17 +2,14 @@
 
 #include <SDL2/SDL.h>
 
-#include <vector>
-
-#include "../../engine/Vec2.h"
+#include "../../engine/v2d_t.h"
 #include "../../engine/PseudoRandom.h"
-#include "../../engine/Viewport.h"
 
 #include "../../PriorityQueue.h"
 
 #define INITIAL_INPUT_LEVEL (10.0f)
 
-namespace Brain {
+namespace Graph2d {
   enum ProgramModes {
     MODE_SIMULATE,
     MODE_PAINT_NEURON,
@@ -49,11 +46,11 @@ namespace Brain {
   };
 
   struct Neuron {
-    Vec2 soma; // soma position
-    Vec2 axon; // axon branch point
+    v2d_t soma; // soma position
+    v2d_t axon; // axon branch point
 
-    Vec2 soma_d; // translated drawing pos
-    Vec2 axon_d;
+    v2d_t soma_d; // translated drawing pos
+    v2d_t axon_d;
 
     std::vector<Synapse> synapses; // synapse list
 
@@ -68,8 +65,7 @@ namespace Brain {
 
   class State {
 public:
-    State() = delete;
-    State(size_t windowWidth, size_t windowHeight);
+    State();
     ~State();
 
     void initColors();
@@ -79,17 +75,12 @@ public:
     void flushNeurons();
     void removeSynapses();
 
-    // void setViewport(const Vec2& bottomLeft, const Vec2& topRight);
-
-    Vec2 windowToWorld(const Vec2& windowCoords) const;
-    Vec2 worldToWindow(const Vec2& worldCoords) const;
-
-    size_t mWindowWidth;
-    size_t mWindowHeight;
+    v2d_t windowToWorld(v2d_t vec2);
+    v2d_t worldToWindow(v2d_t vec2);
 
     int mProgramMode;
 
-    PseudoRandom mPseudoRandom;
+    PseudoRandom* mPseudoRandom;
 
     RgbFloat mColors[NUM_COLORS];
 
@@ -106,11 +97,13 @@ public:
     double mFurthestRightFire = 0.0;
     double mInputLevel = INITIAL_INPUT_LEVEL;
 
-    Vec2 mMousePosition;
+    v2d_t mMousePosition;
     bool mMouseMoved;
 
     double mPaintRadius = 300.0;
 
-    Viewport mViewport;
+    double mViewZoom = 1.0;
+    v2d_t mViewBottomLeft;
+    v2d_t mViewTopRight;
   };
 }

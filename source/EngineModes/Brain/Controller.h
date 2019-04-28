@@ -17,9 +17,9 @@
 #define DECAY_RATE (0.00053f)
 #define SIGNAL_PROPOGATION_RATE (5.15f)
 
-#define MAX_DENDRITE_LENGTH (1.35)
-#define MIN_AXON_LENGTH (1.25)
-#define MAX_AXON_LENGTH (2.35)
+#define MAX_DENDRITE_LENGTH (130)
+#define MIN_AXON_LENGTH (125)
+#define MAX_AXON_LENGTH (235)
 
 #define INPUT_DELAY (33)
 
@@ -28,10 +28,6 @@
 
 #define PAINT_DENSITY (0.0002)
 
-#define VIEW_DEFAULT_BOTTOM (-10)
-#define VIEW_DEFAULT_LEFT (-10)
-#define VIEW_DEFAULT_TOP (10)
-#define VIEW_DEFAULT_RIGHT (10)
 
 
 namespace Brain {
@@ -46,11 +42,11 @@ namespace Brain {
     void update();
     bool handleInput();
 
-    void paintNeurons(v2d_t center, double radius, int num);
+    void paintNeurons(Vec2 center, double radius, int num);
     void removeSynapses();
-    void removeNeurons(v2d_t pos, double radius);
-    void paintInputNeuron(v2d_t pos, double radius);
-    void removeInputNeurons(v2d_t pos, double radius);
+    void removeNeurons(Vec2 pos, double radius);
+    void paintInputNeuron(Vec2 pos, double radius);
+    void removeInputNeurons(Vec2 pos, double radius);
 
     void growSynapses();
     void flushNeurons();
@@ -58,11 +54,12 @@ namespace Brain {
 
   private:
     bool handleKeystroke();
-    void handleMouseButton(int button, v2d_t pos);
+    void handleMouseButton(int button, const Vec2& windowCoords);
+    void handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent, const Vec2& windowCoords);
 
     void viewReset();
     void initNeurons();
-    void growNeurons(v2d_t tl, v2d_t br, int num);
+    void growNeurons(Vec2 tl, Vec2 br, int num);
     void removeNeuron(int i);
     void removeInputNeuron(int i);
     void processEvents(double process_until);
@@ -72,8 +69,8 @@ namespace Brain {
     int mWindowWidth;
     int mWindowHeight;
 
-    State* mState;
-    Renderer* mRenderer;
+    State mState;
+    Renderer mRenderer;
 
     SDL_Event mSdlEvent;
   };

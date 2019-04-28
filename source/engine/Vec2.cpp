@@ -1,180 +1,181 @@
 #include "Vec2.h"
 
-void v2d_print(const char* str, v2d_t a) {
-  printf ("%s <%.3f, %.3f>\n", str, a.x, a.y);
+Vec2::Vec2() {
 }
 
-void v2di_print(const char* str, v2di_t a) {
-  printf ("%s <%6d, %6d>\n", str, a.x, a.y);
+Vec2::Vec2(VEC2_DATA_TYPE x, VEC2_DATA_TYPE y) {
+  this->x = x;
+  this->y = y;
 }
 
-// return 1 if equal, 0 otherwise
-int v2d_isequal(v2d_t a, v2d_t b) {
-  if (a.x == b.x && a.y == b.y) return 1;
-  return 0;
+Vec2 Vec2::zero() {
+  return Vec2(0, 0);
 }
 
-// returns a vector of magnitude zero
-v2d_t v2d_zero() {
-  v2d_t a;
-  a.x = 0.0f;
-  a.y = 0.0f;
-  return a;
+Vec2& Vec2::operator=(const Vec2& a) {
+  x = a.x;
+  y = a.y;
+  return *this;
 }
 
-// zeroes out an existing vector
-void v2d_zero(v2d_t* a) {
-  a->x = 0.0f;
-  a->y = 0.0f;
+VEC2_DATA_TYPE Vec2::operator[](const int index) const {
+  return (&x)[index];
 }
 
-// returns unit vector at angle theta
-v2d_t v2d_unit(VEC2_DATA_TYPE theta) {
-  v2d_t a;
-  a.x = cos(theta);
-  a.y = sin(theta);
-  return a;
+VEC2_DATA_TYPE& Vec2::operator[](const int index) {
+  return (&x)[index];
 }
 
-// returns a v2d_t
-v2d_t v2d_v(VEC2_DATA_TYPE x, VEC2_DATA_TYPE y) {
-  v2d_t a;
-  a.x = x;
-  a.y = y;
-  return a;
+Vec2 Vec2::operator-() const {
+  return Vec2(-x, -y);
 }
 
-// returns a v2di_t
-v2di_t v2di_v(int x, int y) {
-  v2di_t a;
-  a.x = x;
-  a.y = y;
-  return a;
+VEC2_DATA_TYPE Vec2::operator*(const Vec2& a) const {
+  return (x * a.x) + (y * a.y);
 }
 
-// returns the distance between two points
-VEC2_DATA_TYPE v2d_dist(v2d_t a, v2d_t b) {
-  a.x -= b.x;
-  a.y -= b.y;
-  return (sqrt ((a.x * a.x) + (a.y * a.y)));
+Vec2 Vec2::operator*(const VEC2_DATA_TYPE a) const {
+  return Vec2(a * x, a * y);
 }
 
-// returns the relative distance between two points
-VEC2_DATA_TYPE v2d_relative_dist(v2d_t a, v2d_t b) {
-  a.x -= b.x;
-  a.y -= b.y;
-  return (a.x * a.x) + (a.y * a.y);
+Vec2 Vec2::operator/(const VEC2_DATA_TYPE a) const {
+  VEC2_DATA_TYPE invA = (VEC2_DATA_TYPE)1.0f / a;
+  return Vec2(invA * x, invA * y);
 }
 
-// returns the magnitude of the vector
-VEC2_DATA_TYPE v2d_mag(v2d_t a) {
-  return (sqrt ((a.x * a.x) + (a.y * a.y)));
+Vec2 Vec2::operator+(const Vec2& a) const {
+  return Vec2(x + a.x, y + a.y);
 }
 
-// returns the unit vector in the same direction as a
-v2d_t v2d_normalize(v2d_t a) {
-  VEC2_DATA_TYPE len = sqrt ((a.x * a.x) + (a.y * a.y));
-
-  if (len <= 0.0f) return a;
-
-  a.x /= len;
-  a.y /= len;
-  return a;
+Vec2 Vec2::operator-(const Vec2& a) const {
+  return Vec2(x - a.x, y - a.y);
 }
 
-// returns scalar * a (s is scalar, a is vector)
-v2d_t v2d_scale(v2d_t a, VEC2_DATA_TYPE scalar) {
-  a.x *= scalar;
-  a.y *= scalar;
-  return a;
+Vec2& Vec2::operator+=(const Vec2 &a) {
+  x += a.x;
+  y += a.y;
+  return *this;
 }
 
-v2d_t v2d_scale(VEC2_DATA_TYPE scalar, v2d_t a) {
-  a.x *= scalar;
-  a.y *= scalar;
-  return a;
+// Vec2& Vec2::operator-=(const Vec2 &a);
+// Vec2& Vec2::operator/=(const Vec2 &a);
+// Vec2& Vec2::operator/=(const VEC2_DATA_TYPE a);
+
+Vec2& Vec2::operator*=(const VEC2_DATA_TYPE a) {
+  x *= a;
+  y *= a;
+  return *this;
 }
 
-// returns a + b
-v2d_t v2d_add(v2d_t a, v2d_t b) {
-  a.x += b.x;
-  a.y += b.y;
-  return a;
+Vec2 operator*(const VEC2_DATA_TYPE a, const Vec2 b) {
+  return b * a;
 }
 
-v2di_t v2di_add(v2di_t a, v2di_t b) {
-  a.x += b.x;
-  a.y += b.y;
-  return a;
+bool Vec2::isEqual(const Vec2& a) const {
+  return (x == a.x) && (y == a.y);
+}
+bool Vec2::isEqual(const Vec2& a, const VEC2_DATA_TYPE epsilon) const {
+  return (fabs(x - a.x) < epsilon) && (fabs(y - a.y) < epsilon);
+}
+bool Vec2::operator==(const Vec2& a) const {
+  return isEqual(a);
+}
+bool Vec2::operator!=(const Vec2& a) const {
+  return !isEqual(a);
 }
 
-// returns a - b
-v2d_t v2d_sub(v2d_t a, v2d_t b) {
-  a.x -= b.x;
-  a.y -= b.y;
-  return a;
+void Vec2::print() const {
+  print(nullptr);
 }
 
-// returns a dot b (|a|*|b|*cos (theta))
-VEC2_DATA_TYPE v2d_dot(v2d_t a, v2d_t b) {
-  return ((a.x * b.x) + (a.y * b.y));
+void Vec2::print(const char* label) const {
+  if (label == nullptr) {
+    printf("Vec2: <%.3f, %.3f>\n", x, y);
+  } else {
+    printf("%s <%.3f, %.3f>\n", label, x, y);
+  }
 }
 
-// returns a cross b (sorta)
-VEC2_DATA_TYPE v2d_cross(v2d_t a, v2d_t b) {
-  return ((a.x * b.y) - (a.y * b.x));
+void Vec2::set(const VEC2_DATA_TYPE& value) {
+  x = y = value;
 }
 
-// returns a vevtor rotated theta radians around the origin
-v2d_t v2d_rot(v2d_t a, VEC2_DATA_TYPE theta) {
-  v2d_t b;
-  b.x = (cos (theta) * a.x) - (sin (theta) * a.y);
-  b.y = (sin (theta) * a.x) + (cos (theta) * a.y);
-  return b;
+VEC2_DATA_TYPE Vec2::length() const {
+  return sqrt((x * x) + (y * y));
 }
 
-// returns the opposite vector
-v2d_t v2d_neg(v2d_t a) {
-  a.x = -a.x;
-  a.y = -a.y;
-  return a;
+VEC2_DATA_TYPE Vec2::ratio() const {
+  if (y == 0.0) {
+    return 0.0;
+  }
+  return x / y;
 }
 
-// returns a perpendicular vector
-v2d_t v2d_normal(v2d_t a) {
-  VEC2_DATA_TYPE t = a.x;
-  a.x = a.y;
-  a.y = -t;
-  return a;
+VEC2_DATA_TYPE Vec2::distance(const Vec2& a, const Vec2& b) {
+  VEC2_DATA_TYPE d_x = a.x - b.x;
+  VEC2_DATA_TYPE d_y = a.y - b.y;
+  return sqrt((d_x * d_x) + (d_y * d_y));
 }
 
-// returns the angle off the x-axis
-VEC2_DATA_TYPE v2d_theta(v2d_t a) {
-  return atan2(a.y, a.x);
+Vec2 Vec2::unit() const {
+  VEC2_DATA_TYPE len = (x * x) + (y * y);
+  // this is probably not the right way to handle this
+  if (len <= 0.0) return Vec2(1, 0);
+  len = 1.0 / sqrt(len);
+  return Vec2(x * len, y * len);
 }
 
-// returns the projection of a onto b
-v2d_t v2d_project(v2d_t a, v2d_t b) {
-  v2d_t p;
-  VEC2_DATA_TYPE dot = (a.x * b.x) + (a.y * b.y); // dot product of a and b
-  VEC2_DATA_TYPE bsq = (b.x * b.x) + (b.y * b.y); // |b|^2
+void Vec2::normalize() {
+  VEC2_DATA_TYPE len = (x * x) + (y * y);
+  // this is probably not the right way to handle this
+  if (len <= 0.0) return;
+  len = 1.0 / sqrt(len);
+  x *= len;
+  y *= len;
+}
 
+VEC2_DATA_TYPE Vec2::dot(const Vec2& other) {
+  return (x * other.x) + (y * other.y);
+}
+
+Vec2 Vec2::project(const Vec2& a, const Vec2& b) {
+  VEC2_DATA_TYPE bsq = (b.x * b.x) + (b.y * b.y);
   // i can't deal with this! bail!
-  if (bsq == 0.0) return v2d_zero ();
+  if (bsq == 0.0) {
+    return Vec2::zero();
+  }
 
-  // so: dot = DOT (b) / (b.x * b.x + b.y * b.y)
+  VEC2_DATA_TYPE dot = (a.x * b.x) + (a.y * b.y);
+  // so: dot = DOT(b) / |b|^2
   dot /= bsq;
 
-  p.x = dot * b.x;
-  p.y = dot * b.y;
-
-  return p;
+  return Vec2(dot * b.x, dot * b.y);
 }
 
-// returns the v2d that is located {percent} of the distance from a to b
-v2d_t v2d_interpolate(v2d_t a, v2d_t b, VEC2_DATA_TYPE percent) {
-  v2d_t ret;
-  ret.x = a.x + ((b.x - a.x) * percent);
-  ret.y = a.y + ((b.y - a.y) * percent);
-  return ret;
+Vec2 Vec2::lerp(const Vec2& a, const Vec2& b, VEC2_DATA_TYPE t) {
+  return Vec2(
+    a.x + ((b.x - a.x) * t),
+    a.y + ((b.y - a.y) * t)
+  );
+}
+
+Vec2 Vec2::hadamard(const Vec2& a) const {
+  return Vec2(
+    x * a.x,
+    y * a.y
+  );
+}
+
+// Vec2 Vec2::random(VEC2_DATA_TYPE length) {
+//   Vec2 ret;
+//
+//   ret.x = r_num(-10.0, 10.0);
+//   ret.y = r_num(-10.0, 10.0);
+//
+//   return ret.unit() * length;
+// }
+
+// assumption: normal is a unit vector
+void Vec2::reflect(Vec2* normal, Vec2* result) const {
+  *result = *this - (*normal * ((*this * *normal) * 2.0));
 }

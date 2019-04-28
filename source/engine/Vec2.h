@@ -3,48 +3,52 @@
 #include <cstdio>
 #include <cmath>
 
-#define VEC2_DATA_TYPE float
+#define VEC2_DATA_TYPE double
 
-// typedefs * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-union v2d_t {
-  struct {
-    VEC2_DATA_TYPE x;
-    VEC2_DATA_TYPE y;
-  };
-  VEC2_DATA_TYPE vec[2];
+class Vec2 {
+public:
+  VEC2_DATA_TYPE x;
+  VEC2_DATA_TYPE y;
+
+  Vec2();
+  Vec2(VEC2_DATA_TYPE x, VEC2_DATA_TYPE y);
+  static Vec2 zero();
+
+  Vec2& operator=(const Vec2& a);
+  VEC2_DATA_TYPE operator[](const int index) const;
+  VEC2_DATA_TYPE& operator[](const int index);
+  Vec2 operator-() const;
+  VEC2_DATA_TYPE operator*(const Vec2& a) const;
+  Vec2 operator*(const VEC2_DATA_TYPE a) const;
+  Vec2 operator/(const VEC2_DATA_TYPE a) const;
+  Vec2 operator+(const Vec2& a) const;
+  Vec2 operator-(const Vec2& a) const;
+  Vec2& operator+=(const Vec2& a);
+  // Vec2& operator-=(const Vec2& a);
+  // Vec2& operator/=(const Vec2& a);
+  // Vec2& operator/=(const VEC2_DATA_TYPE a);
+  Vec2& operator*=(const VEC2_DATA_TYPE a);
+  friend Vec2 operator*(const VEC2_DATA_TYPE a, const Vec2 b);
+
+  bool isEqual(const Vec2& a) const;
+  bool isEqual(const Vec2& a, const VEC2_DATA_TYPE epsilon) const;
+  bool operator==(const Vec2& a) const;
+  bool operator!=(const Vec2& a) const;
+
+  void print() const;
+  void print(const char* label) const;
+  void set(const VEC2_DATA_TYPE& value);
+  VEC2_DATA_TYPE length() const;
+  VEC2_DATA_TYPE ratio() const;
+
+  static VEC2_DATA_TYPE distance(const Vec2& a, const Vec2& b);
+  Vec2 unit() const;
+  void normalize();
+  VEC2_DATA_TYPE dot(const Vec2& other);
+  static Vec2 project(const Vec2& a, const Vec2& b);
+  static Vec2 lerp(const Vec2& a, const Vec2& b, VEC2_DATA_TYPE t);
+  Vec2 hadamard(const Vec2& a) const;
+  // static Vec2 random(VEC2_DATA_TYPE length);
+
+  void reflect(Vec2* normal, Vec2* result) const;
 };
-
-union v2di_t {
-  struct {
-    int x;
-    int y;
-  };
-  int vec[2];
-};
-
-// prototypes * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-void v2d_print(const char* str, v2d_t a);
-void v2di_print(const char* str, v2di_t a);
-int v2d_isequal(v2d_t a, v2d_t b);
-v2d_t v2d_zero();
-void v2d_zero(v2d_t* a);
-v2d_t v2d_unit(VEC2_DATA_TYPE theta);
-v2d_t v2d_v(VEC2_DATA_TYPE x, VEC2_DATA_TYPE y);
-v2di_t v2di_v(int x, int y);
-VEC2_DATA_TYPE v2d_dist(v2d_t a, v2d_t b);
-VEC2_DATA_TYPE v2d_relative_dist(v2d_t a, v2d_t b);
-VEC2_DATA_TYPE v2d_mag(v2d_t a);
-v2d_t v2d_normalize(v2d_t a);
-v2d_t v2d_scale(v2d_t a, VEC2_DATA_TYPE scalar);
-v2d_t v2d_scale(VEC2_DATA_TYPE scalar, v2d_t a);
-v2d_t v2d_add(v2d_t a, v2d_t b);
-v2di_t v2di_add(v2di_t a, v2di_t b);
-v2d_t v2d_sub(v2d_t a, v2d_t b);
-VEC2_DATA_TYPE v2d_dot(v2d_t a, v2d_t b);
-VEC2_DATA_TYPE v2d_cross(v2d_t a, v2d_t b);
-v2d_t v2d_rot(v2d_t a, VEC2_DATA_TYPE theta);
-v2d_t v2d_neg(v2d_t a);
-v2d_t v2d_normal(v2d_t a);
-VEC2_DATA_TYPE v2d_theta(v2d_t a);
-v2d_t v2d_project(v2d_t a, v2d_t b);
-v2d_t v2d_interpolate(v2d_t a, v2d_t b, VEC2_DATA_TYPE percent);

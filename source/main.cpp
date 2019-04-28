@@ -1,12 +1,12 @@
 #include "engine/SdlApp.h"
 #include "EngineModes/Brain/Controller.h"
 
-#define SCREEN_WIDTH (1024)
-#define SCREEN_HEIGHT (1024)
+#define DEFAULT_SCREEN_WIDTH (1024)
+#define DEFAULT_SCREEN_HEIGHT (1024)
 
-void mainLoop(Brain::Controller* brainController) {
+void mainLoop(Brain::Controller* brainController, int screenW, int screenH) {
   SdlApp sdlApp;
-  if (sdlApp.init(SCREEN_WIDTH, SCREEN_HEIGHT) != 0) {
+  if (sdlApp.init(screenW, screenH) != 0) {
     printf("ERROR: could not initialize SdlApp\n");
     return;
   }
@@ -27,8 +27,19 @@ void mainLoop(Brain::Controller* brainController) {
 }
 
 int main(int nargs, char** argv) {
-  Brain::Controller* brainController = new Brain::Controller(SCREEN_WIDTH, SCREEN_HEIGHT);
-  mainLoop(brainController);
+  int screenW = DEFAULT_SCREEN_WIDTH;
+  int screenH = DEFAULT_SCREEN_HEIGHT;
+
+  if (nargs == 2) {
+    screenW = screenH = atoi(argv[1]);
+  }
+  else if (nargs == 3) {
+    screenW = atoi(argv[1]);
+    screenH = atoi(argv[2]);
+  }
+
+  Brain::Controller* brainController = new Brain::Controller(screenW, screenH);
+  mainLoop(brainController, screenW, screenH);
   delete brainController;
 
   return 0;

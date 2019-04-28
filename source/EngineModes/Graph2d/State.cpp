@@ -1,27 +1,29 @@
 #include "State.h"
 
-namespace Brain {
-  State::State(size_t windowWidth, size_t windowHeight) :
-    mWindowWidth(windowWidth),
-    mWindowHeight(windowHeight),
+namespace Graph2d {
+  State::State() :
     mProgramMode(MODE_PAINT_NEURON),
-    mPseudoRandom(),
-    mMousePosition(0, 0),
-    mViewport(windowWidth, windowHeight)
+    mPseudoRandom(nullptr)
   {
+    mPseudoRandom = new PseudoRandom();
+
     initColors();
     reset();
   }
 
   State::~State() {
     mNeurons.clear();
+
+    if (mPseudoRandom != nullptr) {
+      delete mPseudoRandom;
+    }
   }
 
   void State::initColors() {
     for (int i = 0; i < NUM_COLORS; ++i) {
-      mColors[i].r = (float)mPseudoRandom.nextDouble(0.0f, 1.0f);
-      mColors[i].g = (float)mPseudoRandom.nextDouble(0.0f, 1.0f);
-      mColors[i].b = (float)mPseudoRandom.nextDouble(0.0f, 1.0f);
+      mColors[i].r = (float)mPseudoRandom->nextDouble(0.0f, 1.0f);
+      mColors[i].g = (float)mPseudoRandom->nextDouble(0.0f, 1.0f);
+      mColors[i].b = (float)mPseudoRandom->nextDouble(0.0f, 1.0f);
     }
 
     mColors[COLOR_SOMA].r = 0.0f;
@@ -70,8 +72,8 @@ namespace Brain {
   }
 
   void State::reset() {
-    // mMousePosition.x = 0;
-    // mMousePosition.y = 0;
+    mMousePosition.x = 0;
+    mMousePosition.y = 0;
     mMouseMoved = false;
 
     //mNeurons.clear();
@@ -111,11 +113,11 @@ namespace Brain {
     }
   }
 
-  Vec2 State::windowToWorld(const Vec2& windowCoords) const {
-    return mViewport.windowToWorld(windowCoords);
+  v2d_t State::windowToWorld(v2d_t vec2) {
+    return v2d_add(v2d_scale(vec2, mViewZoom), mViewBottomLeft);
   }
 
-  Vec2 State::worldToWindow(const Vec2& worldCoords) const {
-    return mViewport.worldToWindow(worldCoords);
+  v2d_t State::worldToWindow(v2d_t vec2) {
+    return v2d_scale(v2d_sub(vec2, mViewBottomLeft), 1.0 / mViewZoom);
   }
 }
