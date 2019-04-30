@@ -60,10 +60,42 @@ void Painter::drawLine(const Vec2& a, const Vec2& b, unsigned char red, unsigned
   int x1 = (int)b.x;
   int y1 = (int)b.y;
 
-  // if (x0 < 0 || x0 >= mWidth) return;
-  // if (y0 < 0 || y0 >= mHeight) return;
-  // if (x1 < 0 || x1 >= mWidth) return;
-  // if (y1 < 0 || y1 >= mHeight) return;
+  clipLine(x0, y0, x1, y1, red, green, blue);
+
+  // int dx =  abs(x1 - x0);
+  // int dy = -abs(y1 - y0);
+  // int sx = x0 < x1 ? 1 : -1;
+  // int sy = y0 < y1 ? 1 : -1;
+  // int err = dx + dy;
+  // int e2;
+
+  // for (;;) {
+  //   if (isOnScreen(x0, y0)) {
+  //     mImageBuffer->setRgb(x0, y0, red, green, blue);
+  //   }
+
+  //   if (x0 == x1 && y0 == y1) {
+  //     break;
+  //   }
+
+  //   e2 = err << 1;
+
+  //   if (e2 >= dy) {
+  //     err += dy;
+  //     x0 += sx;
+  //   }
+  //   if (e2 <= dx) {
+  //     err += dx;
+  //     y0 += sy;
+  //   }
+  // }
+}
+
+void Painter::drawOnScreenLine(int x0, int y0, int x1, int y1, unsigned char red, unsigned char green, unsigned char blue) {
+  // int x0 = (int)a.x;
+  // int y0 = (int)a.y;
+  // int x1 = (int)b.x;
+  // int y1 = (int)b.y;
 
   int dx =  abs(x1 - x0);
   int dy = -abs(y1 - y0);
@@ -73,15 +105,13 @@ void Painter::drawLine(const Vec2& a, const Vec2& b, unsigned char red, unsigned
   int e2;
 
   for (;;) {
-    if (isOnScreen(x0, y0)) {
-      mImageBuffer->setRgb(x0, y0, red, green, blue);
-    }
+    mImageBuffer->setRgb(x0, y0, red, green, blue);
 
     if (x0 == x1 && y0 == y1) {
       break;
     }
 
-    e2 = 2 * err;
+    e2 = err << 1;
 
     if (e2 >= dy) {
       err += dy;
@@ -93,6 +123,7 @@ void Painter::drawLine(const Vec2& a, const Vec2& b, unsigned char red, unsigned
     }
   }
 }
+
 
 void Painter::drawString(int x, int y, const char* text) {
   int initialX = x;
@@ -115,4 +146,76 @@ void Painter::drawFormattedString(int x, int y, const char* format, ...) {
   vsnprintf(mTextBuffer, DRAWSTRINGF_MAX_LENGTH, format, argList);
   va_end(argList);
   drawString(x, y, mTextBuffer);
+}
+
+
+// https://www.geeksforgeeks.org/liang-barsky-algorithm/
+#define ROUND(a) ((int)(a + 0.5))
+
+bool Painter::clipTest(float p, float q, float& t0, float& t1) {
+  float r;
+  int retVal = true;
+
+  // line entry point
+  if (p < 0.0) {
+    r = q / p;
+
+    // line portion is outside the clipping edge
+    if (r > t1) {
+      retVal = false;
+    }
+    else if (r > t0) {
+      t0 = r;
+    }
+  }
+  else
+  //line leaving point
+  if (p > 0.0) {
+    r = q / p;
+
+    // line portion is outside
+    if (r < t0) {
+      retVal = false;
+    }
+
+    else if (r < t1) {
+      t1 = r;
+    }
+  }
+
+  // p = 0, so line is parallel to this clipping edge
+  else
+  // Line is outside clipping edge
+  if (q < 0.0) {
+    retVal = false;
+  }
+
+  return retVal;
+}
+
+void Painter::clipLine(int x0, int y0, int x1, int y1, unsigned char red, unsigned char green, unsigned char blue) {
+  Vec2 winMin = Vec2(0, 0);
+  Vec2 winMax = Vec2(mWidth, mHeight);
+
+  float t0 = 0.0, t1 = 1.0, dx = x1 - x0, dy;
+
+  // inside test wrt left edge && inside test wrt right edge
+  if (clipTest(-dx, x0 - winMin.x, t0, t1) && clipTest(dx, winMax.x - x0, t0, t1)) {
+    dy = y1 - y0;
+
+    // inside test wrt bottom edge && inside test wrt top edge
+    if (clipTest(-dy, y0 - winMin.y, t0, t1) && clipTest(dy, winMax.y - y0, t0, t1)) {
+      if (t1 < 1.0) {
+        x1 = x0 + t1 * dx;
+        y1 = y0 + t1 * dy;
+      }
+
+      if (t0 > 0.0) {
+        x0 += t0 * dx;
+        y0 += t0 * dy;
+      }
+
+      drawOnScreenLine(ROUND(x0), ROUND(y0), ROUND(x1), ROUND(y1), red, green, blue);
+    }
+  }
 }

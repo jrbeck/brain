@@ -141,7 +141,10 @@ namespace Brain {
   }
 
   void Controller::handleMouseButton(int button, const Vec2& windowCoords) {
+    // TODO: stop trying to be so clever ... just use screen coords and let the
+    // viewport handle the transform
     Vec2 worldCoords = mState.windowToWorld(windowCoords);
+
     // TODO: this is just here because the zoom that used to live in mState is no longer there
     VEC2_DATA_TYPE zoom = mState.mViewport.getAntipixelScale().x;
 

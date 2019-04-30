@@ -20,11 +20,15 @@ public:
   void setRgb(const v2di_t& a, unsigned char red, unsigned char green, unsigned char blue);
   void setRgb(const Vec2& a, unsigned char red, unsigned char green, unsigned char blue);
   void drawLine(const Vec2& a, const Vec2& b, unsigned char red, unsigned char green, unsigned char blue);
+  void drawOnScreenLine(int x1, int y1, int x2, int y2, unsigned char red, unsigned char green, unsigned char blue);
 
   void drawString(int x, int y, const char* text);
   void drawFormattedString(int x, int y, const char* format, ...);
 
 private:
+  bool clipTest(float p, float q, float& t1, float& t2);
+  void clipLine(int x1, int y1, int x2, int y2, unsigned char red, unsigned char green, unsigned char blue);
+
   ImageBuffer* mImageBuffer;
   BasicText* mBasicText;
   int mWidth, mHeight;
