@@ -36,7 +36,6 @@ void Viewport::zoom(VEC2_DATA_TYPE scale, const Vec2& worldCoords) {
 void Viewport::translateByPixels(const Vec2& offset) {
   mViewRectangle.center += (offset.hadamard(mAntiPixelScale));
   recalculate();
-  mViewRectangle.center.print("center");
 }
 
 Vec2 Viewport::windowToWorld(const Vec2& windowCoords) const {

@@ -62,8 +62,6 @@ namespace Brain {
           mState.mMousePosition.x = mSdlEvent.motion.x;
           mState.mMousePosition.y = mSdlEvent.motion.y;
 
-          mState.mMousePosition.print("pos");
-
           mState.mMouseMoved = true;
           break;
 
@@ -379,7 +377,7 @@ namespace Brain {
     for (int i = 0; i < (int)mState.mInputNeurons.size(); ++i)
       if (Vec2::distance(mState.mNeurons[mState.mInputNeurons[i]].soma, pos) <= radius) {
         removeInputNeuron(i);
-        i--;
+        --i;
       }
   }
 
