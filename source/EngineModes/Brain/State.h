@@ -7,6 +7,7 @@
 #include "../../engine/Vec2.h"
 #include "../../engine/PseudoRandom.h"
 #include "../../engine/Viewport.h"
+#include "../../engine/Painter.h"
 
 #include "../../PriorityQueue.h"
 
@@ -33,12 +34,6 @@ namespace Brain {
     COLOR_PROG1,
     COLOR_PROG2,
     NUM_COLORS,
-  };
-
-  struct RgbFloat {
-    float r;
-    float g;
-    float b;
   };
 
   struct Synapse {
@@ -78,8 +73,6 @@ public:
 
     void flushNeurons();
     void removeSynapses();
-
-    // void setViewport(const Vec2& bottomLeft, const Vec2& topRight);
 
     Vec2 windowToWorld(const Vec2& windowCoords) const;
     Vec2 worldToWindow(const Vec2& worldCoords) const;

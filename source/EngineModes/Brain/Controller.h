@@ -1,11 +1,10 @@
 #pragma once
 
-// #include <cstdio>
-// #include <cstdlib>
-// #include <cmath>
 #include <vector>
 
 #include <SDL2/SDL.h>
+
+#include "../../engine/EngineModeController.h"
 
 #include "State.h"
 #include "Renderer.h"
@@ -17,7 +16,7 @@
 #define DECAY_RATE (0.00053f)
 #define SIGNAL_PROPOGATION_RATE (5.15f)
 
-#define MAX_DENDRITE_LENGTH (130)
+#define MAX_DENDRITE_LENGTH (0.11)
 #define MIN_AXON_LENGTH (125)
 #define MAX_AXON_LENGTH (235)
 
@@ -29,9 +28,8 @@
 #define PAINT_DENSITY (0.0002)
 
 
-
 namespace Brain {
-  class Controller {
+  class Controller : public EngineModeController {
   public:
     Controller(int windowWidth, int windowHeight);
     ~Controller();
@@ -39,7 +37,7 @@ namespace Brain {
     ImageBuffer* getOutputImageBuffer();
     void drawFrame();
 
-    void update();
+    bool update();
     bool handleInput();
 
     void paintNeurons(Vec2 center, double radius, int num);

@@ -87,7 +87,7 @@ namespace Brain {
 
       if (mState.mProgramMode == MODE_SIMULATE) {
         if (mState.mMouseMoved && (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-          mState.mViewport.translateByPixels(mouseDelta);
+          mState.mViewport.translateByPixels(-mouseDelta);
           mState.mMouseMoved = false;
         }
       }
@@ -191,13 +191,9 @@ namespace Brain {
 
   void Controller::simReset() {
     mState.reset();
-    // mState.mViewport.reset();
   }
 
   void Controller::viewReset() {
-    // Vec2 newBottomLeft = Vec2(VIEW_DEFAULT_LEFT, VIEW_DEFAULT_BOTTOM);
-    // Vec2 newTopRight = Vec2(VIEW_DEFAULT_RIGHT, VIEW_DEFAULT_TOP);
-    // mState.setViewport(newBottomLeft, newTopRight);
     mState.mViewport.reset();
   }
 
@@ -266,24 +262,15 @@ namespace Brain {
     std::vector<int> inRangeNeuronIndices;
     Synapse synapse;
 
-    // Vec2 tl, br;
-
-    // tl.x = 100;
-    // tl.y = 40;
-
-    // br.x = 400;
-    // br.y = 20;
-
     mState.mNumSynapses = 0;
 
     printf("growing synapses .....................................\n");
 
-    // step through the neurons and assign synapses
     for (int i = 0; i < (int)mState.mNeurons.size(); ++i) {
       mState.mNeurons[i].synapses.clear();
 
       for (int j = 0; j < (int)mState.mNeurons.size(); ++j) {
-        if (i == j || Vec2::distance(mState.mNeurons[i].axon, mState.mNeurons[j].soma) > (MAX_DENDRITE_LENGTH * mState.mViewport.getAntipixelScale().x)) {
+        if (i == j || Vec2::distance(mState.mNeurons[i].axon, mState.mNeurons[j].soma) > MAX_DENDRITE_LENGTH) {
           continue;
         }
         inRangeNeuronIndices.push_back(j);
@@ -295,24 +282,13 @@ namespace Brain {
         synapse.length = dist;
         synapse.source = i;
         synapse.target = inRangeNeuronIndices[j];
-        synapse.percent = 1.0f /(double)inRangeNeuronIndices.size();
+        synapse.percent = 1.0f / (double)inRangeNeuronIndices.size();
         mState.mNeurons[i].synapses.push_back(synapse);
 
         mState.mNumSynapses++;
       }
 
       inRangeNeuronIndices.resize(0);
-
-      // TODO: apparently this takes a while and used to provide some
-      // feedback to the user while it was working
-      // glClear(GL_COLOR_BUFFER_BIT);
-      //
-      // handle_input();
-      //
-      // draw_mouse(mouse_position, 22, 32);
-      // draw_progress_bar(tl, br, (double)i /(double)mState.mNeurons.size(), mColors[COLOR_PROG1], mColors[COLOR_PROG2]);
-      //
-      // SDL_GL_SwapBuffers();
     }
   }
 
@@ -389,7 +365,7 @@ namespace Brain {
     mState.mInputNeurons.pop_back();
   }
 
-  void Controller::update() {
+  bool Controller::update() {
     // if (mState.mProgramMode == MODE_SIMULATE) {
     // }
 
@@ -397,7 +373,7 @@ namespace Brain {
 
     double delta_time = now - mState.mLastUpdateTicks;
     if (delta_time < MIN_TIME_STEP) {
-      return;
+      return false;
     }
     mState.mLastUpdateTicks = now;
 
@@ -415,6 +391,8 @@ namespace Brain {
         mState.mNeurons[i].charge = 0.0f;
       }
     }
+
+    return false;
   }
 
   void Controller::processEvents(double process_until) {

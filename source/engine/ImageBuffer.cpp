@@ -14,11 +14,28 @@ ImageBuffer::ImageBuffer(const ImageBuffer& other) :
   copy(other);
 }
 
+ImageBuffer::ImageBuffer(uint width, uint height) :
+  mPixels(nullptr)
+{
+  resize(width, height);
+}
+
 ImageBuffer::~ImageBuffer() {
   destroyPixels();
 }
 
 void ImageBuffer::copy(const ImageBuffer& other) {
+  if (mWidth == other.getWidth() && mHeight == other.getHeight()) {
+    std::vector<unsigned char> rgbaVector;
+
+    uint totalPixels = mWidth * mHeight;
+    // for (uint offset = 0; offset < totalPixels; ++offset) {
+      memcpy((void *)mPixels, (void *)other.mPixels, totalPixels * sizeof(Pixel));
+    // }
+
+    return;
+  }
+
   mWidth = other.getWidth();
   mHeight = other.getHeight();
   std::vector<unsigned char> rgbaVector;
@@ -26,15 +43,15 @@ void ImageBuffer::copy(const ImageBuffer& other) {
   buildFromRgbaVector(rgbaVector);
 }
 
-unsigned ImageBuffer::resize(unsigned width, unsigned height) {
+uint ImageBuffer::resize(uint width, uint height) {
+  destroyPixels();
+
   mWidth = width;
   mHeight = height;
 
-  destroyPixels();
-
-  unsigned totalPixels = mWidth * mHeight;
+  uint totalPixels = mWidth * mHeight;
   mPixels = new Pixel[totalPixels];
-  for (unsigned offset = 0; offset < totalPixels; ++offset) {
+  for (uint offset = 0; offset < totalPixels; ++offset) {
     mPixels[offset].setRgb(0, 0, 0);
   }
 
@@ -42,15 +59,15 @@ unsigned ImageBuffer::resize(unsigned width, unsigned height) {
 }
 
 void ImageBuffer::clear(unsigned char r, unsigned char g, unsigned char b) {
-  unsigned totalPixels = mWidth * mHeight;
-  for (unsigned offset = 0; offset < totalPixels; ++offset) {
+  uint totalPixels = mWidth * mHeight;
+  for (uint offset = 0; offset < totalPixels; ++offset) {
     mPixels[offset].setRgb(r, g, b);
   }
 }
 
-unsigned ImageBuffer::loadPng(const char* filename) {
+uint ImageBuffer::loadPng(const char* filename) {
   std::vector<unsigned char> rgbaVector;
-  unsigned error = lodepng::decode(rgbaVector, mWidth, mHeight, filename);
+  uint error = lodepng::decode(rgbaVector, mWidth, mHeight, filename);
   if (error) {
     std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
     return error;
@@ -59,10 +76,10 @@ unsigned ImageBuffer::loadPng(const char* filename) {
   return 0;
 }
 
-unsigned ImageBuffer::savePng(const char* filename) {
+uint ImageBuffer::savePng(const char* filename) {
   std::vector<unsigned char> rgbaVector;
   convertToRgba(rgbaVector);
-  unsigned error = lodepng::encode(filename, rgbaVector, mWidth, mHeight);
+  uint error = lodepng::encode(filename, rgbaVector, mWidth, mHeight);
   if (error) {
     std::cout << "encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
     return error;
@@ -70,15 +87,15 @@ unsigned ImageBuffer::savePng(const char* filename) {
   return 0;
 }
 
-unsigned ImageBuffer::getWidth() const {
+uint ImageBuffer::getWidth() const {
   return mWidth;
 }
 
-unsigned ImageBuffer::getHeight() const {
+uint ImageBuffer::getHeight() const {
   return mHeight;
 }
 
-unsigned ImageBuffer::softResize(unsigned width, unsigned height) {
+uint ImageBuffer::softResize(uint width, uint height) {
   if (width * height != mWidth * mHeight) {
     return 1;
   }
@@ -88,25 +105,25 @@ unsigned ImageBuffer::softResize(unsigned width, unsigned height) {
 }
 
 Pixel *ImageBuffer::getPixel(int x, int y) {
-  unsigned offset = getOffset(x, y);
+  uint offset = getOffset(x, y);
   return &mPixels[offset];
 }
 
 void ImageBuffer::setPixel(int x, int y, const Pixel& pixel) {
-  unsigned offset = getOffset(x, y);
+  uint offset = getOffset(x, y);
   mPixels[offset].setRgb(pixel.mR, pixel.mG, pixel.mB);
 }
 
 void ImageBuffer::setRgb(int x, int y, unsigned char r, unsigned char g, unsigned char b) {
-  unsigned offset = getOffset(x, y);
+  uint offset = getOffset(x, y);
   mPixels[offset].setRgb(r, g, b);
 }
 
 void ImageBuffer::convertToRgba(std::vector<unsigned char>& rgbaVector) const {
   rgbaVector.resize(mWidth * mHeight * RAW_PIXEL_SIZE);
 
-  unsigned totalPixels = mWidth * mHeight;
-  for (unsigned offset = 0; offset < totalPixels; ++offset) {
+  uint totalPixels = mWidth * mHeight;
+  for (uint offset = 0; offset < totalPixels; ++offset) {
     rgbaVector[(offset * RAW_PIXEL_SIZE) + 0] = mPixels[offset].mR;
     rgbaVector[(offset * RAW_PIXEL_SIZE) + 1] = mPixels[offset].mG;
     rgbaVector[(offset * RAW_PIXEL_SIZE) + 2] = mPixels[offset].mB;
@@ -136,26 +153,25 @@ SDL_Surface* ImageBuffer::toSdlSurface() const {
   return surface;
 }
 
-unsigned ImageBuffer::destroyPixels() {
-  if (mPixels != 0) {
+void ImageBuffer::destroyPixels() {
+  if (mPixels != nullptr) {
     delete [] mPixels;
-    mPixels = 0;
-    mWidth = 0;
-    mHeight = 0;
-    return 1;
+    mPixels = nullptr;
   }
-  return 0;
+
+  mWidth = 0;
+  mHeight = 0;
 }
 
-unsigned ImageBuffer::getOffset(int x, int y) {
+uint ImageBuffer::getOffset(int x, int y) {
   return x + (y * mWidth);
 }
 
 void ImageBuffer::buildFromRgbaVector(std::vector<unsigned char>& rgbaVector) {
   destroyPixels();
-  unsigned totalPixels = mWidth * mHeight;
+  uint totalPixels = mWidth * mHeight;
   mPixels = new Pixel[totalPixels];
-  for (unsigned offset = 0; offset < totalPixels; ++offset) {
+  for (uint offset = 0; offset < totalPixels; ++offset) {
     mPixels[offset].fromRgba(&rgbaVector[offset * RAW_PIXEL_SIZE]);
   }
 }

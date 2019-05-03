@@ -10,25 +10,26 @@
 #include "Pixel.h"
 
 #define RAW_PIXEL_SIZE (4)
-#define SDL_BIT_DEPTH  (32)
+#define SDL_BIT_DEPTH (32)
 
 class ImageBuffer {
 public:
   ImageBuffer();
   ImageBuffer(const ImageBuffer& other);
+  ImageBuffer(uint width, uint height);
   ~ImageBuffer();
 
   void copy(const ImageBuffer& other);
 
-  unsigned resize(unsigned width, unsigned height);
+  uint resize(unsigned width, unsigned height);
   void clear(unsigned char r, unsigned char g, unsigned char b);
 
-  unsigned loadPng(const char* filename);
-  unsigned savePng(const char* filename);
+  uint loadPng(const char* filename);
+  uint savePng(const char* filename);
 
-  unsigned getWidth() const;
-  unsigned getHeight() const;
-  unsigned softResize(unsigned width, unsigned height);
+  uint getWidth() const;
+  uint getHeight() const;
+  uint softResize(uint width, uint height);
 
   Pixel* getPixel(int x, int y);
   void setPixel(int x, int y, const Pixel& pixel);
@@ -38,7 +39,7 @@ public:
   SDL_Surface* toSdlSurface() const;
 
 private:
-  unsigned mWidth, mHeight;
+  uint mWidth, mHeight;
   Pixel* mPixels;
 
   // copy constructor guard
@@ -46,8 +47,8 @@ private:
   // assignment operator guard
   // ImageBuffer& operator=(const ImageBuffer& imageBuffer) { return *this; }
 
-  unsigned destroyPixels();
+  void destroyPixels();
 
-  unsigned getOffset(int x, int y);
+  uint getOffset(int x, int y);
   void buildFromRgbaVector(std::vector<unsigned char>& rgbaVector);
 };

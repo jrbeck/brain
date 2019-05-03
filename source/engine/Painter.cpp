@@ -35,6 +35,14 @@ void Painter::setRgb(int x, int y, unsigned char red, unsigned char green, unsig
   mImageBuffer->setRgb(x, y, red, green, blue);
 }
 
+void Painter::setRgb(int x, int y, RgbFloat color) {
+  if (!isOnScreen(x, y)) {
+    return;
+  }
+
+  mImageBuffer->setRgb(x, y, color.r * 255, color.g * 255, color.b * 255);
+}
+
 void Painter::setRgb(const v2di_t& a, unsigned char red, unsigned char green, unsigned char blue) {
   if (!isOnScreen(a.x, a.y)) {
     return;
@@ -125,6 +133,49 @@ void Painter::drawOnScreenLine(int x0, int y0, int x1, int y1, unsigned char red
 }
 
 
+void Painter::drawLine(const Vec2& a, const Vec2& b, const RgbFloat& color) {
+  drawLine(a, b, color.r * 255, color.g * 255, color.b * 255);
+}
+
+void Painter::drawRing(VEC2_DATA_TYPE radius, const Vec2& center, const RgbFloat& color) {
+  char red = color.r * 255;
+  char green = color.g * 255;
+  char blue = color.b * 255;
+
+  Vec2 a, b;
+  b.x = center.x + radius;
+  b.y = center.y;
+
+  for (int i = 0; i <= 360; i += 10) {
+    VEC2_DATA_TYPE radians = (VEC2_DATA_TYPE)i * DEG2RAD;
+    a.x = center.x + (cos(radians) * radius);
+    a.y = center.y + (sin(radians) * radius);
+
+    drawLine(a, b, red, green, blue);
+    b = a;
+  }
+}
+
+void Painter::drawHex(VEC2_DATA_TYPE radius, const Vec2& center, const RgbFloat& color) {
+  char red = color.r * 255;
+  char green = color.g * 255;
+  char blue = color.b * 255;
+
+  Vec2 a, b;
+  b.x = center.x + radius;
+  b.y = center.y;
+
+  for (int i = 10; i <= 360; i += 60) {
+    VEC2_DATA_TYPE radians = (VEC2_DATA_TYPE)i * DEG2RAD;
+    a.x = center.x + (cos(radians) * radius);
+    a.y = center.y + (sin(radians) * radius);
+
+    drawLine(a, b, red, green, blue);
+    b = a;
+  }
+}
+
+
 void Painter::drawString(int x, int y, const char* text) {
   int initialX = x;
 
@@ -152,8 +203,8 @@ void Painter::drawFormattedString(int x, int y, const char* format, ...) {
 // https://www.geeksforgeeks.org/liang-barsky-algorithm/
 #define ROUND(a) ((int)(a + 0.5))
 
-bool Painter::clipTest(float p, float q, float& t0, float& t1) {
-  float r;
+bool Painter::clipTest(VEC2_DATA_TYPE p, VEC2_DATA_TYPE q, VEC2_DATA_TYPE& t0, VEC2_DATA_TYPE& t1) {
+  VEC2_DATA_TYPE r;
   int retVal = true;
 
   // line entry point
@@ -197,7 +248,7 @@ void Painter::clipLine(int x0, int y0, int x1, int y1, unsigned char red, unsign
   Vec2 winMin = Vec2(0, 0);
   Vec2 winMax = Vec2(mWidth, mHeight);
 
-  float t0 = 0.0, t1 = 1.0, dx = x1 - x0, dy;
+  VEC2_DATA_TYPE t0 = 0.0, t1 = 1.0, dx = x1 - x0, dy;
 
   // inside test wrt left edge && inside test wrt right edge
   if (clipTest(-dx, x0 - winMin.x, t0, t1) && clipTest(dx, winMax.x - x0, t0, t1)) {

@@ -16,7 +16,7 @@ public:
   ~Viewport() {};
 
   void reset();
-  void setViewport(const Vec2& dimensions, const Vec2& center);
+  void setViewport(const Vec2& center, const Vec2& dimensions);
 
   void zoom(VEC2_DATA_TYPE scale, const Vec2& worldCoords);
   void translateByPixels(const Vec2& offset);

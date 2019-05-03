@@ -12,6 +12,7 @@ set(SOURCE_FILES
   source/engine/SdlApp.cpp
   source/engine/v2d_t.cpp
   source/engine/Vec2.cpp
+  source/engine/Complex.cpp
   source/engine/ImageBuffer.cpp
   source/engine/Pixel.cpp
   source/engine/Painter.cpp
@@ -24,6 +25,9 @@ set(SOURCE_FILES
   source/EngineModes/Brain/Controller.cpp
   source/EngineModes/Brain/State.cpp
   source/EngineModes/Brain/Renderer.cpp
+  source/EngineModes/Mandelbrot/Controller.cpp
+  source/EngineModes/Mandelbrot/State.cpp
+  source/EngineModes/Mandelbrot/Renderer.cpp
   source/lib/lodepng.cpp
 )
 

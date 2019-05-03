@@ -1,10 +1,15 @@
 #include "engine/SdlApp.h"
+#include "engine/EngineModeController.h"
+
 #include "EngineModes/Brain/Controller.h"
+#include "EngineModes/Mandelbrot/Controller.h"
+
+
 
 #define DEFAULT_SCREEN_WIDTH (1024)
 #define DEFAULT_SCREEN_HEIGHT (1024)
 
-void mainLoop(Brain::Controller* brainController, int screenW, int screenH) {
+void mainLoop(EngineModeController& engineModeController, int screenW, int screenH) {
   SdlApp sdlApp;
   if (sdlApp.init(screenW, screenH) != 0) {
     printf("ERROR: could not initialize SdlApp\n");
@@ -15,10 +20,10 @@ void mainLoop(Brain::Controller* brainController, int screenW, int screenH) {
   Uint32 frameCount = 0;
 
   while (!quit) {
-    quit = brainController->handleInput();
-    brainController->update();
-    brainController->drawFrame();
-    sdlApp.drawFrame(brainController->getOutputImageBuffer());
+    quit = engineModeController.handleInput();
+    quit |= engineModeController.update();
+    engineModeController.drawFrame();
+    sdlApp.drawFrame(engineModeController.getOutputImageBuffer());
 
     frameCount++;
   }
@@ -38,9 +43,9 @@ int main(int nargs, char** argv) {
     screenH = atoi(argv[2]);
   }
 
-  Brain::Controller* brainController = new Brain::Controller(screenW, screenH);
-  mainLoop(brainController, screenW, screenH);
-  delete brainController;
+  // Brain::Controller engineModeController(screenW, screenH);
+  Mandelbrot::Controller engineModeController(screenW, screenH);
+  mainLoop(engineModeController, screenW, screenH);
 
   return 0;
 }
