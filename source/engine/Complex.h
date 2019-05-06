@@ -13,6 +13,9 @@ public:
   Complex operator+(const Complex& other) const;
   Complex operator*(const Complex& other) const;
 
+  // this is purely for mandelbrot calculations
+  void squareAndAdd(const Complex& other);
+
   VEC2_DATA_TYPE length() const;
 
   Vec2 mValue;

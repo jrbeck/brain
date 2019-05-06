@@ -8,7 +8,7 @@ public:
 
   virtual bool handleInput() = 0;
   virtual bool update() = 0;
-  virtual void drawFrame() = 0;
+  virtual void render() = 0;
 
   virtual ImageBuffer* getOutputImageBuffer() = 0;
 };

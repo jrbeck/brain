@@ -14,7 +14,7 @@ namespace Brain {
     ~Renderer();
 
     ImageBuffer* getImageBuffer();
-    void drawFrame(State& state);
+    void render(State& state);
 
   private:
     void drawNeurons();

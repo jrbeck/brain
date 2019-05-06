@@ -38,5 +38,7 @@ namespace Mandelbrot {
 
     ImageBuffer mFractalBuffer;
     Painter mFractalPainter;
+
+    std::vector<Vec2> mWhiskers;
   };
 }

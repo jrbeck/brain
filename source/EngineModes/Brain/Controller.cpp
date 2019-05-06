@@ -40,8 +40,8 @@ namespace Brain {
     return mRenderer.getImageBuffer();
   }
 
-  void Controller::drawFrame() {
-    mRenderer.drawFrame(mState);
+  void Controller::render() {
+    mRenderer.render(mState);
   }
 
   bool Controller::handleInput() {

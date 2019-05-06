@@ -20,7 +20,7 @@ namespace Mandelbrot {
     ~Controller();
 
     ImageBuffer* getOutputImageBuffer();
-    void drawFrame();
+    void render();
 
     bool update();
     bool handleInput();

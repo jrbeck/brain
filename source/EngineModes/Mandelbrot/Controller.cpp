@@ -17,8 +17,8 @@ namespace Mandelbrot {
     return mRenderer.getImageBuffer();
   }
 
-  void Controller::drawFrame() {
-    mRenderer.drawFrame(mState);
+  void Controller::render() {
+    mRenderer.render(mState);
   }
 
   bool Controller::handleInput() {
@@ -39,9 +39,9 @@ namespace Mandelbrot {
           mState.mMousePosition.x = mSdlEvent.motion.x;
           mState.mMousePosition.y = mSdlEvent.motion.y;
 
-          mState.mMousePosition.print("asd");
-          mState.windowToWorld(mState.mMousePosition).print();
-          mState.worldToWindow(mState.windowToWorld(mState.mMousePosition)).print();
+          // mState.mMousePosition.print("window");
+          // mState.windowToWorld(mState.mMousePosition).print();
+          // mState.worldToWindow(mState.windowToWorld(mState.mMousePosition)).print();
 
           mState.mMouseMoved = true;
           break;
@@ -80,9 +80,13 @@ namespace Mandelbrot {
     bool quit = false;
 
     switch (mSdlEvent.key.keysym.sym) {
-      // case SDLK_r:
-      //   simReset();
-      //   break;
+      case SDLK_c:
+        mState.mWhiskers.clear();
+        break;
+
+      case SDLK_r:
+        viewReset();
+        break;
 
       case SDLK_ESCAPE:
         quit = true;
@@ -96,39 +100,13 @@ namespace Mandelbrot {
   }
 
   void Controller::handleMouseButton(int button, const Vec2& windowCoords) {
-    button++;
-    int x = windowCoords.x;
-    x++;
+    Vec2 worldCoords = mState.windowToWorld(windowCoords);
 
-
-    // // TODO: stop trying to be so clever ... just use screen coords and let the
-    // // viewport handle the transform
-    // Vec2 worldCoords = mState.windowToWorld(windowCoords);
-
-    // // TODO: this is just here because the zoom that used to live in mState is no longer there
-    // VEC2_DATA_TYPE zoom = mState.mViewport.getAntipixelScale().x;
-
-    // if (mState.mProgramMode == MODE_SIMULATE) {
+    // if (button == SDL_BUTTON_LEFT) {
     // }
-    // else if (mState.mProgramMode == MODE_PAINT_NEURON) {
-    //   if (button == SDL_BUTTON_LEFT) {
-    //     paintNeurons(worldCoords,
-    //       mState.mPaintRadius * zoom,
-    //       (int)(PAINT_DENSITY * (MY_PI * mState.mPaintRadius * mState.mPaintRadius)));
-    //   }
-    //   if (button == SDL_BUTTON_RIGHT) {
-    //     removeSynapses();
-    //     removeNeurons(worldCoords, mState.mPaintRadius * zoom);
-    //   }
-    // }
-    // else if (mState.mProgramMode == MODE_PAINT_INPUT) {
-    //   if (button == SDL_BUTTON_LEFT) {
-    //     paintInputNeuron(worldCoords, mState.mPaintRadius * zoom);
-    //   }
-    //   if (button == SDL_BUTTON_RIGHT) {
-    //     removeInputNeurons(worldCoords, mState.mPaintRadius * zoom);
-    //   }
-    // }
+    if (button == SDL_BUTTON_RIGHT) {
+      mState.mWhiskers.push_back(worldCoords);
+    }
   }
 
   void Controller::handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent) {
@@ -144,9 +122,10 @@ namespace Mandelbrot {
   }
 
   void Controller::viewReset() {
-    Vec2 center = Vec2(-0.5, 0.5);
-    Vec2 dimensions = Vec2(3.5, 3.5);
+    Vec2 center = Vec2(-0.5, 0.0);
+    Vec2 dimensions = Vec2(3.5, 3.5 * ((float)mWindowHeight / (float)mWindowWidth));
     mState.mViewport.setViewport(center, dimensions);
+    mState.mViewportChanged = true;
   }
 
   bool Controller::update() {

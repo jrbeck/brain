@@ -22,10 +22,10 @@ namespace Mandelbrot {
     return mImageBuffer;
   }
 
-  void Renderer::drawFrame(State& state) {
+  void Renderer::render(State& state) {
     mState = &state;
 
-    mPainter->clear(0, 0, 0);
+    // mPainter->clear(0, 0, 0);
 
     if (mState->mViewportChanged) {
       drawMandelbrot();
@@ -34,25 +34,32 @@ namespace Mandelbrot {
 
     mImageBuffer->copy(mState->mFractalBuffer);
 
-    Vec2 worldCoords = mState->windowToWorld(mState->mMousePosition);
-    traceMandelbrotFunction(worldCoords, 50);
+    // Vec2 worldCoords = mState->windowToWorld(mState->mMousePosition);
+    // drawWhisker(worldCoords, 500);
+
+    // for (Vec2 whiskerPosition : mState->mWhiskers) {
+    //   drawWhisker(whiskerPosition, 500);
+    // }
   }
 
-  void Renderer::traceMandelbrotFunction(const Vec2& worldCoords, uint iterations) {
-    Complex x, lastX(worldCoords);
+  void Renderer::drawWhisker(const Vec2& worldCoords, uint iterations) {
+    Complex x(worldCoords), lastX;
     Complex first(worldCoords);
 
     RgbFloat color(1.0, 0.0, 0.0);
 
     for (uint i = 0; i < iterations; ++i) {
-      x = (lastX * lastX) + first;
+      // x = (lastX * lastX) + first;
+      x.squareAndAdd(first);
+
+      color = calculateColor(i, iterations);
       mPainter->drawLine(mState->worldToWindow(x.mValue), mState->worldToWindow(lastX.mValue), color);
       lastX = x;
     }
   }
 
   void Renderer::drawMandelbrot() {
-    uint maxIterations = 15;
+    uint maxIterations = 1024;
 
     Vec2 windowCoords;
     for (int y = 0; y < mWindowHeight; ++y) {
@@ -95,17 +102,14 @@ namespace Mandelbrot {
 
   uint Renderer::calculateIterations(const Vec2& worldCoords, uint maxIterations) const {
     uint i = 0;
-
-    Complex x, lastX(worldCoords);
+    Complex x(worldCoords), lastX;
     Complex first(worldCoords);
 
     for (; i < maxIterations; ++i) {
-      x = (lastX * lastX) + first;
-
+      x.squareAndAdd(first);
       if (x.length() > 2) {
         return i;
       }
-
       lastX = x;
     }
 
@@ -117,7 +121,17 @@ namespace Mandelbrot {
       return RgbFloat(0, 0, 0);
     }
 
-    float value = (64.0f + (((float)iterations * (255.0f - 64.0f) / (float)maxIterations))) / 255.0f;
-    return RgbFloat(value, value, value);
+    // grey
+    // float value = (64.0f + (((float)iterations * (255.0f - 64.0f) / (float)maxIterations))) / 255.0f;
+    // return RgbFloat(value, value, value);
+
+    RgbFloat scale(0.412, 1.15, 0.666);
+    RgbFloat offset(0.6, 0.3, 1.33);
+    float t = 2.0 * MY_PI * (float)iterations / (float)maxIterations;
+    return RgbFloat(
+      0.5 + (0.5 * sin(t * scale.r + offset.r)),
+      0.5 + (0.5 * sin(t * scale.g + offset.g)),
+      0.5 + (0.5 * sin(t * scale.b + offset.b))
+    );
   }
 }

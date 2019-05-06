@@ -23,7 +23,7 @@ namespace Mandelbrot {
 
     mViewportChanged = true;
 
-    mLastUpdateTicks = SDL_GetTicks();
+    // mLastUpdateTicks = SDL_GetTicks();
   }
 
   Vec2 State::windowToWorld(const Vec2& windowCoords) const {

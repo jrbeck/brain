@@ -26,13 +26,8 @@ ImageBuffer::~ImageBuffer() {
 
 void ImageBuffer::copy(const ImageBuffer& other) {
   if (mWidth == other.getWidth() && mHeight == other.getHeight()) {
-    std::vector<unsigned char> rgbaVector;
-
     uint totalPixels = mWidth * mHeight;
-    // for (uint offset = 0; offset < totalPixels; ++offset) {
-      memcpy((void *)mPixels, (void *)other.mPixels, totalPixels * sizeof(Pixel));
-    // }
-
+    memcpy((void*)mPixels, (void*)other.mPixels, totalPixels * sizeof(Pixel));
     return;
   }
 

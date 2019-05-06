@@ -20,7 +20,7 @@ namespace Brain {
     return mImageBuffer;
   }
 
-  void Renderer::drawFrame(State& state) {
+  void Renderer::render(State& state) {
     mState = &state;
 
     mPainter->clear(0, 0, 0);

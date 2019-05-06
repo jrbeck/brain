@@ -22,7 +22,7 @@ void mainLoop(EngineModeController& engineModeController, int screenW, int scree
   while (!quit) {
     quit = engineModeController.handleInput();
     quit |= engineModeController.update();
-    engineModeController.drawFrame();
+    engineModeController.render();
     sdlApp.drawFrame(engineModeController.getOutputImageBuffer());
 
     frameCount++;
@@ -43,9 +43,12 @@ int main(int nargs, char** argv) {
     screenH = atoi(argv[2]);
   }
 
-  // Brain::Controller engineModeController(screenW, screenH);
-  Mandelbrot::Controller engineModeController(screenW, screenH);
-  mainLoop(engineModeController, screenW, screenH);
+  // Brain::Controller* engineModeController = new Brain::Controller(screenW, screenH);
+  Mandelbrot::Controller* engineModeController = new Mandelbrot::Controller(screenW, screenH);
+
+  mainLoop(*engineModeController, screenW, screenH);
+
+  delete engineModeController;
 
   return 0;
 }

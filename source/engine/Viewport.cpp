@@ -11,7 +11,7 @@ Viewport::Viewport(size_t windowWidth, size_t windowHeight) :
 
 void Viewport::reset() {
   Vec2 center = Vec2(0.0, 0.0);
-  Vec2 dimensions = Vec2(1.0, mWindowDimensions.ratio());
+  Vec2 dimensions = Vec2(1.0, 1.0 / mWindowDimensions.ratio());
   setViewport(center, dimensions);
 }
 

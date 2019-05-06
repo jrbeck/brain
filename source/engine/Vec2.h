@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cmath>
 
-#define VEC2_DATA_TYPE double
+typedef double VEC2_DATA_TYPE;
 
 class Vec2 {
 public:

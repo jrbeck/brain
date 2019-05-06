@@ -18,10 +18,10 @@ namespace Mandelbrot {
     ~Renderer();
 
     ImageBuffer* getImageBuffer();
-    void drawFrame(State& state);
+    void render(State& state);
 
   private:
-    void traceMandelbrotFunction(const Vec2& worldCoords, uint iterations);
+    void drawWhisker(const Vec2& worldCoords, uint iterations);
     void drawMandelbrot();
     uint calculateIterations(const Vec2& worldCoords, uint maxIterations) const;
     RgbFloat calculateColor(uint iterations, uint maxIterations) const;
