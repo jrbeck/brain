@@ -88,6 +88,10 @@ namespace Mandelbrot {
         viewReset();
         break;
 
+      case SDLK_i:
+        printInfo();
+        break;
+
       case SDLK_ESCAPE:
         quit = true;
         break;
@@ -126,6 +130,10 @@ namespace Mandelbrot {
     Vec2 dimensions = Vec2(3.5, 3.5 * ((float)mWindowHeight / (float)mWindowWidth));
     mState.mViewport.setViewport(center, dimensions);
     mState.mViewportChanged = true;
+  }
+
+  void Controller::printInfo() {
+    mState.mViewport.print();
   }
 
   bool Controller::update() {

@@ -18,6 +18,8 @@ public:
   void reset();
   void setViewport(const Vec2& center, const Vec2& dimensions);
 
+  void print();
+
   void zoom(VEC2_DATA_TYPE scale, const Vec2& worldCoords);
   void translateByPixels(const Vec2& offset);
 
@@ -38,5 +40,4 @@ private:
   Vec2 mViewBottomLeft;
   Vec2 mPixelScale;
   Vec2 mAntiPixelScale;
-
 };

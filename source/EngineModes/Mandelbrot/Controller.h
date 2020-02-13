@@ -31,6 +31,7 @@ namespace Mandelbrot {
     void handleMouseWheelEvent(const SDL_MouseWheelEvent& wheelEvent);
 
     void viewReset();
+    void printInfo();
 
     int mWindowWidth;
     int mWindowHeight;

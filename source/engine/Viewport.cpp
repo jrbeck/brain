@@ -21,6 +21,12 @@ void Viewport::setViewport(const Vec2& center, const Vec2& dimensions) {
   recalculate();
 }
 
+void Viewport::print() {
+  printf("Viewport:\n");
+  mViewRectangle.center.print("center");
+  mViewRectangle.dimensions.print("dimensions");
+}
+
 void Viewport::zoom(VEC2_DATA_TYPE scale, const Vec2& worldCoords) {
   Vec2 diff = mViewRectangle.center - worldCoords;
 

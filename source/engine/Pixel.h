@@ -7,7 +7,7 @@ public:
   int mR, mG, mB;
 
   Pixel();
-//  Pixel(const Pixel& other);
+  Pixel(const Pixel& other);
   ~Pixel();
 
   Pixel operator=(const Pixel& rhs);

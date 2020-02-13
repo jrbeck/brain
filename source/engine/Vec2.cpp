@@ -3,18 +3,23 @@
 Vec2::Vec2() {
 }
 
-Vec2::Vec2(VEC2_DATA_TYPE x, VEC2_DATA_TYPE y) {
-  this->x = x;
-  this->y = y;
+Vec2::Vec2(const Vec2& other) {
+  x = other.x;
+  y = other.y;
+}
+
+Vec2::Vec2(VEC2_DATA_TYPE xVal, VEC2_DATA_TYPE yVal) {
+  x = xVal;
+  y = yVal;
 }
 
 Vec2 Vec2::zero() {
   return Vec2(0, 0);
 }
 
-Vec2& Vec2::operator=(const Vec2& a) {
-  x = a.x;
-  y = a.y;
+Vec2& Vec2::operator=(const Vec2& other) {
+  x = other.x;
+  y = other.y;
   return *this;
 }
 
@@ -95,9 +100,9 @@ void Vec2::print() const {
 
 void Vec2::print(const char* label) const {
   if (label == nullptr) {
-    printf("Vec2: <%.3f, %.3f>\n", x, y);
+    printf("Vec2: <%.5f, %.5f>\n", x, y);
   } else {
-    printf("%s <%.3f, %.3f>\n", label, x, y);
+    printf("%s <%.5f, %.5f>\n", label, x, y);
   }
 }
 

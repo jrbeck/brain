@@ -6,11 +6,11 @@ Pixel::Pixel() :
   mB(0)
 {}
 
-// Pixel(const Pixel &other) :
-//   mR(other.mR),
-//   mG(other.mG),
-//   mB(other.mB)
-// {}
+Pixel::Pixel(const Pixel &other) :
+  mR(other.mR),
+  mG(other.mG),
+  mB(other.mB)
+{}
 
 Pixel Pixel::operator=(const Pixel& rhs) {
   Pixel lhs;

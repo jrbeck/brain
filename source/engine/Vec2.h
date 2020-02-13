@@ -11,10 +11,11 @@ public:
   VEC2_DATA_TYPE y;
 
   Vec2();
-  Vec2(VEC2_DATA_TYPE x, VEC2_DATA_TYPE y);
+  Vec2(const Vec2& other);
+  Vec2(VEC2_DATA_TYPE xVal, VEC2_DATA_TYPE yVal);
   static Vec2 zero();
 
-  Vec2& operator=(const Vec2& a);
+  Vec2& operator=(const Vec2& other);
   VEC2_DATA_TYPE operator[](const int index) const;
   VEC2_DATA_TYPE& operator[](const int index);
   Vec2 operator-() const;

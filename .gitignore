@@ -34,9 +34,5 @@ brain.opensdf
 # vs 2017
 .vs
 
-# output from build.sh
-brain
-
-# cmake
-cmake_dir
+build
 bin

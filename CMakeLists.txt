@@ -4,7 +4,7 @@ project(Brain)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lSDL2 -ansi -Wall -Werror -Wextra -pedantic -pedantic-errors -O3 -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lSDL2 -lpthread -ansi -Wall -Werror -Wextra -pedantic -pedantic-errors -O3 -g")
 
 set(SOURCE_FILES
   source/main.cpp
