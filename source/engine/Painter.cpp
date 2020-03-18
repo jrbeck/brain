@@ -246,7 +246,7 @@ bool Painter::clipTest(VEC2_DATA_TYPE p, VEC2_DATA_TYPE q, VEC2_DATA_TYPE& t0, V
 
 void Painter::clipLine(int x0, int y0, int x1, int y1, unsigned char red, unsigned char green, unsigned char blue) {
   Vec2 winMin = Vec2(0, 0);
-  Vec2 winMax = Vec2(mWidth, mHeight);
+  Vec2 winMax = Vec2(mWidth - 1, mHeight - 1);
 
   VEC2_DATA_TYPE t0 = 0.0, t1 = 1.0, dx = x1 - x0, dy;
 
